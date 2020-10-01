@@ -1,7 +1,8 @@
 apply plugin: 'com.android.application'
 // Google services plugin for firebase backend
 apply plugin: 'com.google.gms.google-services'
-
+// Crashlytics Gradle plugin for crash reports
+apply plugin: 'com.google.firebase.crashlytics'
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -34,8 +35,14 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     // Firebase SDK for Google Analytics
     implementation 'com.google.firebase:firebase-analytics:17.5.0'
-    // Firebase SDK for Cloud Firestore
-    implementation 'com.google.firebase:firebase-firestore:21.6.0'
+    // Firebase SDK for Realtime DB
+    implementation 'com.google.firebase:firebase-database:19.5.0'
+    // Firebase SDK for Authentication
+    implementation 'com.google.firebase:firebase-auth:19.4.0'
+    // Firebase Authentication UI Library
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
+    // Crash Reports
+    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
