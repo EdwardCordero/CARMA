@@ -15,7 +15,7 @@ android {
         multiDexEnabled true
         versionCode 1
         versionName "1.0"
-
+        vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -30,6 +30,7 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    // Constraint layout
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
     // Multidex library - should fix "Cannot fit req. class in single dex file" error
     implementation 'com.android.support:multidex:1.0.3'
@@ -43,6 +44,12 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     // Crash Reports
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
+    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    // Dependency for @Nullable annotation
+    testImplementation 'com.google.code.findbugs:jsr305:3.0.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

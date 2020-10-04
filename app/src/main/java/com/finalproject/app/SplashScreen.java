@@ -2,7 +2,7 @@ package com.finalproject.app;
 
 import android.content.Intent;
 import android.os.Bundle;
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class SplashScreen extends AppCompatActivity {
