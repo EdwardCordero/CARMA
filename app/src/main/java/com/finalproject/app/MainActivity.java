@@ -32,23 +32,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private Button btnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        btnRegister = (Button) findViewById(R.id.btnSignInRegister);
-        /***************************************************************
-         * TODO: Need make a click listener for sign-in button
-         * Sign-in/Register button is not currently working
-         * Authentication handling code is complete
-         * Need to figure out how to do click event so that
-         * when the user clicks the "Sign-in/Register" button
-         * it starts the Authentication Activity
-         ****************************************************************/
-
 
         // Check if user is signed in
         // If not currently signed in then start the login activity

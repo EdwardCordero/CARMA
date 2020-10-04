@@ -35,6 +35,7 @@ import java.util.List;
 
 public class AuthUiActivity extends AppCompatActivity {
 
+    private Button btnRegister;
     /***********************************
      * FIREBASE INSTANCE VARIABLES
      ************************************/
@@ -53,6 +54,15 @@ public class AuthUiActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_ui_layout);
+
+        btnRegister = (Button) findViewById(R.id.btnSignInRegister);
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleLoginRegister();
+            }
+        });
+
         if (FirebaseAuth.getInstance().getCurrentUser() != null){
             startActivity(new Intent(this, MainActivity.class));
             this.finish();
@@ -90,7 +100,7 @@ public class AuthUiActivity extends AppCompatActivity {
 
 
 
-    public void handleLoginRegister(View view) {
+    public void handleLoginRegister() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
