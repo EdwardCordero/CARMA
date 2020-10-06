@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity {
         if (FirebaseAuth.getInstance().getCurrentUser() == null){
             startLoginActivity();
         }
+        // Bottom Menu
+
+
 
     } // End onCreate
 
