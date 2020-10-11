@@ -19,6 +19,8 @@ import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +35,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    private BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +49,37 @@ public class MainActivity extends AppCompatActivity {
         }
         // Bottom Menu
 
-
+        bottomNavigationView=findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setOnNavigationItemSelectedListener(bottomNavMethod);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment,new CarInformation()).commit();
 
     } // End onCreate
+
+    private BottomNavigationView.OnNavigationItemSelectedListener bottomNavMethod=new
+            BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                    Fragment fragment=null;
+
+                    switch(menuItem.getItemId())
+                    {
+                        case R.id.carInformation:
+                            fragment=new CarInformation();
+                            break;
+
+                        case R.id.reminder:
+                            fragment=new Reminder();
+                            break;
+
+                        case R.id.settings:
+                            fragment=new Settings();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment,fragment).commit();
+                    return true;
+                }
+            };
 
     private void startLoginActivity(){
         // Create intent for AuthUI Login activity

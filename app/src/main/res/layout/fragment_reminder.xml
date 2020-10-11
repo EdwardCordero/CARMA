@@ -8,8 +8,8 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="406dp"
-        android:layout_height="77dp"
+        android:layout_width="145dp"
+        android:layout_height="46dp"
         android:layout_marginStart="2dp"
         android:layout_marginTop="237dp"
         android:layout_marginEnd="3dp"
