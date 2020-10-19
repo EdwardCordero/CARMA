@@ -19,8 +19,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".auth.AuthUiActivity"
-            android:theme="@style/SplashScreen"></activity>
+            android:name=".auth.AuthUiActivity">
+        </activity>
+        <activity
+            android:name=".auth.RegistrationActivity">
+        </activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"></activity>
