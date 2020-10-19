@@ -44,7 +44,7 @@ public class AuthUiActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 100;
     // Authentication Providers
     private List<AuthUI.IdpConfig> providers = Arrays.asList(
-            new AuthUI.IdpConfig.EmailBuilder().build(),
+            new AuthUI.IdpConfig.EmailBuilder().setAllowNewAccounts(false).build(),
             new AuthUI.IdpConfig.GoogleBuilder().build());
 
     // Firebase Auth instance
@@ -114,8 +114,9 @@ public class AuthUiActivity extends AppCompatActivity {
                 this.finish();
 
             } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText(this, "Signed in cancelled", Toast.LENGTH_SHORT).show();
-                finish();
+                Toast.makeText(this, "Sign in cancelled", Toast.LENGTH_SHORT).show();
+                //startActivity(new Intent(this, AuthUiActivity.class));
+                //finish();
             }
         }
     }
@@ -127,7 +128,7 @@ public class AuthUiActivity extends AppCompatActivity {
                         .setAvailableProviders(providers)
                         .setTosAndPrivacyPolicyUrls("https://example.com", "https://example.com")
                         // Reserved for when our logo is finsihed
-                        //.setLogo()
+                        .setLogo(R.drawable.speedometer)
                         .setAlwaysShowSignInMethodScreen(true)
                         .build(),
                 RC_SIGN_IN);
