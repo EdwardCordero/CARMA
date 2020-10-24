@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private Button VRbutton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,8 +44,19 @@ public class MainActivity extends AppCompatActivity {
             startLoginActivity();
         }
 
+        //Creates Vehicle Registration Button
+        VRbutton = (Button) findViewById(R.id.VRbutton);
+        VRbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openVehicleRegistraion();
+            }
+        });
     } // End onCreate
-
+    public  void openVehicleRegistraion(){
+        Intent intent = new Intent(this, VehicleRegistration.class);
+        startActivity(intent);
+    }
     private void startLoginActivity(){
         // Create intent for AuthUI Login activity
         Intent intent = new Intent(this, AuthUiActivity.class);
