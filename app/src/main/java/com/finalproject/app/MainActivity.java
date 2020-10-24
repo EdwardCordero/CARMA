@@ -49,11 +49,11 @@ public class MainActivity extends AppCompatActivity {
         VRbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openVehicleRegistraion();
+                openVehicleRegistration();
             }
         });
     } // End onCreate
-    public  void openVehicleRegistraion(){
+    public  void openVehicleRegistration(){
         Intent intent = new Intent(this, VehicleRegistration.class);
         startActivity(intent);
     }
