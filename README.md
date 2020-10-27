@@ -11,6 +11,3 @@ Download: https://developer.android.com/studio/?gclid=CjwKCAjw4rf6BRAvEiwAn2Q76g
 Git 
 Download: https://git-scm.com/downloads
 
-Instructions:
-
-Make a clone of branch prototype to start developing.
