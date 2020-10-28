@@ -27,7 +27,7 @@ public class Reminder extends Fragment {
     //added by Warren
     private PopupWindow popupwindow;
     private LayoutInflater layoutInflater;
-    private ConstraintLayout constraintLayout;
+    private ConstraintLayout constraintLayout; 
     ///////////////////////////////////////
 
 
