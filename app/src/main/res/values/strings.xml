@@ -110,6 +110,21 @@
     <string name="location"> Country or region </string>
     <string name="editAccount"> Edit Account </string>
 
+    <!-- Strings for the garage page -->
+    <string name="make"> Make of car </string>
+    <string name="model"> Model </string>
+    <string name="year"> Year </string>
+    <string name="bodyStyle"> Body Style</string>
+    <string name="mileage"> Mileage </string>
+    <string name="licensePlate"> License Plate </string>
+    <string name="tireDiameter"> Tire Diameter </string>
+    <string name="tireService"> Tire Service Type </string>
+    <string name="tireRotation"> Tire Rotation Miles </string>
+    <string name="oilGrade"> Oil Grade </string>
+    <string name="oilChange"> Oil Change Date </string>
+    <string name="insuranceNum"> Insurance Policy Num </string>
+    <string name="registrationExp"> Exp: date </string>
+
 
 
     <string name="action_settings">Settings</string>

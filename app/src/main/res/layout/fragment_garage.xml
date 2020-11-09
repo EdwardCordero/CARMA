@@ -67,7 +67,7 @@
         android:id="@+id/MakeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Make of Car"
+        android:text="@string/make"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -79,7 +79,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="40dp"
-        android:text="Model"
+        android:text="@string/model"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -90,7 +90,7 @@
         android:id="@+id/YearText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Year"
+        android:text="@string/year"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -102,7 +102,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Mileage"
+        android:text="@string/mileage"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -114,7 +114,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="License Plate"
+        android:text="@string/licensePlate"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -126,14 +126,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="BodyStyle"
+        android:text="@string/bodyStyle"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MakeText" />
 
     <TextView
-        android:id="@+id/TireInformation"
+        android:id="@+id/TireInformationText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tire Information"
@@ -146,38 +146,38 @@
         app:layout_constraintVertical_bias="0.105" />
 
     <TextView
-        android:id="@+id/TireDiameter"
+        android:id="@+id/TireDiameterText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tire Diameter"
+        android:text="@string/tireDiameter"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/TireInformationText" />
 
     <TextView
         android:id="@+id/TireServiceTypeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tire Service Type"
+        android:text="@string/tireService"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireInformation" />
+        app:layout_constraintTop_toBottomOf="@+id/TireInformationText" />
 
     <TextView
         android:id="@+id/TireRotationMilesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="Tire Rotation Miles"
+        android:text="@string/tireRotation"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireDiameter" />
+        app:layout_constraintTop_toBottomOf="@+id/TireDiameterText" />
 
     <TextView
         android:id="@+id/OilInformation"
@@ -196,7 +196,7 @@
         android:id="@+id/OilGradeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Oil Grade"
+        android:text="@string/oilGrade"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -207,7 +207,7 @@
         android:id="@+id/OilChangeMilesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Oil Change Date:"
+        android:text="@string/oilChange"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -233,7 +233,7 @@
         android:id="@+id/RegistrationExperationText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exp: Date"
+        android:text="@string/registrationExp"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"
@@ -244,7 +244,7 @@
         android:id="@+id/InsurancePolicyNumText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Insurance Policy Num"
+        android:text="@string/insuranceNum"
         android:background="#E7E7E7"
         android:textSize="20sp"
         android:textColor="#000"

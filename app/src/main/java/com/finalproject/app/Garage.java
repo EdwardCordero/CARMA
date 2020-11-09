@@ -1,5 +1,7 @@
 package com.finalproject.app;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -13,8 +15,21 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.google.firebase.FirebaseApiNotAvailableException;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.lang.reflect.Array;
+
+import javax.annotation.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +57,15 @@ public class Garage extends Fragment {
             vr_InsurancePolicyNum, vr_RegistrationExperation;
 
     private Button vr_Cancel, vr_Save, vr_AddVehicle, recallButton, warrantyButton, CloseRecallButton, CloseWarrantyButton;
-    //variables for card view menu
-    private CardView card1;
+
+    //Variables for garage text view
+
+    private TextView make, model, year, bodystyle, mileage, licensePlate, oilGrade, oilChange, tireRotation, tireService,
+                     tireDiameter, insuranceNum, registrationExp;
+
+    // Database Variables
+    private DatabaseReference carDatabaseReference;
+
 
     public Garage() {
         // Required empty public constructor
@@ -88,6 +110,24 @@ public class Garage extends Fragment {
                 android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.CarList));
         myAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         carList.setAdapter(myAdapter);
+
+        // initializes text for garage
+        make = (TextView) view.findViewById(R.id.MakeText);
+        model = (TextView) view.findViewById(R.id.ModelText);
+        year = (TextView) view.findViewById(R.id.YearText);
+        bodystyle = (TextView) view.findViewById(R.id.BodyStyleText);
+        mileage = (TextView) view.findViewById(R.id.MileageText);
+        licensePlate = (TextView) view.findViewById(R.id.LicensePlateText);
+        tireDiameter = (TextView) view.findViewById(R.id.TireDiameterText);
+        tireService = (TextView) view.findViewById(R.id.TireServiceTypeText);
+        tireRotation = (TextView) view.findViewById(R.id.TireRotationMilesText);
+        oilGrade = (TextView) view.findViewById(R.id.OilGradeText);
+        oilChange = (TextView) view.findViewById(R.id.OilChangeMilesText);
+        insuranceNum = (TextView) view.findViewById(R.id.InsurancePolicyNumText);
+        registrationExp = (TextView) view.findViewById(R.id.RegistrationExperationText);
+
+        // Sets up database for car registration
+        carDatabaseReference = FirebaseDatabase.getInstance().getReference();
 
         //Creates button and adds listener
         vr_AddVehicle = (Button) view.findViewById(R.id.AddCarButton);
@@ -161,6 +201,7 @@ public class Garage extends Fragment {
     }
     //Creates popup when user clicks button to add vehicle
     public void RegisterNewVehicle() {
+
         dialogBuilder = new AlertDialog.Builder(getActivity());
         final View registervehiclePopup = getLayoutInflater().inflate(R.layout.vrpopup, null);
 
@@ -192,7 +233,13 @@ public class Garage extends Fragment {
             @Override
             public void onClick(View v) {
                 //define save button here!!
+                CarRegistration carRegistration = new CarRegistration(vr_Make.getText().toString(), vr_Model.getText().toString(), vr_Year.getText().toString(),
+                        vr_BodyStyle.getText().toString(), vr_Mileage.getText().toString(), vr_LicensePlate.getText().toString(), vr_OilChangeMiles.getText().toString(),
+                        vr_OilGrade.getText().toString(), vr_TireRotationMiles.getText().toString(), vr_TireServiceType.getText().toString(), vr_TireDiameter.getText().toString(),
+                        vr_InsurancePolicyNum.getText().toString(), vr_RegistrationExperation.getText().toString());
+                carDatabaseReference.child("Cars").push().setValue(carRegistration);
 
+                dialog.dismiss();
             }
         });
 
