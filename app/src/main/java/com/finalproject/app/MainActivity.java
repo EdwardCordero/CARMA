@@ -61,6 +61,10 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.settings:
                             fragment=new Account();
                             break;
+
+                        case R.id.garage:
+                            fragment=new Garage();
+                            break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment,fragment).commit();
                     return true;

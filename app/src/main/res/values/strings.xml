@@ -103,5 +103,18 @@
         "For example, position the FAB to one side of stream of a cards so the FAB won’t interfere "
         "when a user tries to pick up one of cards.\n\n"
     </string>
+    <!-- Strings for the account page -->
+    <string name="userName"> Username </string>
+    <string name="email"> Email </string>
+    <string name="dob"> Date of birth </string>
+    <string name="location"> Country or region </string>
+    <string name="editAccount"> Edit Account </string>
+
+
+
     <string name="action_settings">Settings</string>
+    <string-array name="CarList">
+        <item>User name: Car 1</item>
+        <item>User name: Car 2</item>
+    </string-array>
 </resources>
