@@ -41,7 +41,7 @@ public class Garage extends Fragment {
             vr_TireRotationMiles, vr_TireServiceType, vr_TireDiameter,
             vr_InsurancePolicyNum, vr_RegistrationExperation;
 
-    private Button vr_Cancel, vr_Save, vr_AddVehicle;
+    private Button vr_Cancel, vr_Save, vr_AddVehicle, recallButton, warrantyButton, CloseRecallButton, CloseWarrantyButton;
     //variables for card view menu
     private CardView card1;
 
@@ -97,7 +97,67 @@ public class Garage extends Fragment {
                 RegisterNewVehicle();
             }
         });
+        //Creates listener for both Recall and Warranty buttons to show popups
+        recallButton = (Button) view.findViewById(R.id.RecallsButton);
+        recallButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+               RecallButtonListener();
+            }
+        });
+
+        warrantyButton = (Button) view.findViewById(R.id.WarrantyButton);
+        warrantyButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                WarrantyButtonListener();
+            }
+        });
         return view;
+    }
+
+    //Creates popup when user clicks on Recall button
+    public void RecallButtonListener() {
+        dialogBuilder = new AlertDialog.Builder(getActivity());
+        final View recallPopup = getLayoutInflater().inflate(R.layout.recall_popup, null);
+
+        //creates buttons on form
+        CloseRecallButton = (Button) recallPopup.findViewById(R.id.CloseButton_Recall);
+
+        dialogBuilder.setView(recallPopup);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        //closes popup when user clicks close.
+        CloseRecallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //define cancel button here!!
+                dialog.dismiss();
+            }
+        });
+    }
+
+    //Creates popup when user clicks on Warranty button
+    public void WarrantyButtonListener() {
+        dialogBuilder = new AlertDialog.Builder(getActivity());
+        final View warrantyPopup = getLayoutInflater().inflate(R.layout.warranty_popup, null);
+
+        //creates buttons on form
+        CloseWarrantyButton = (Button) warrantyPopup.findViewById(R.id.CloseButton_Warranty);
+
+        dialogBuilder.setView(warrantyPopup);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        //closes popup when user clicks close.
+        CloseWarrantyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //define cancel button here!!
+                dialog.dismiss();
+            }
+        });
     }
     //Creates popup when user clicks button to add vehicle
     public void RegisterNewVehicle() {
