@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
     /***********************************
@@ -40,6 +42,12 @@ public class RegistrationActivity extends AppCompatActivity {
      ************************************/
     // Firebase Auth instance
     private FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+
+
+    /***********************************
+     * FIREBASE DB Instance Variables
+     ************************************/
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
     @NonNull
     public static Intent createIntent(@NonNull Context context){
@@ -77,6 +85,7 @@ public class RegistrationActivity extends AppCompatActivity {
         String uEmail = mUserEmail.getText().toString().trim();
         String uPasswd = mUserPassword.getText().toString().trim();
         String confirmPasswd = mConfirmPassword.getText().toString().trim();
+        DatabaseReference userEmailRef = rootRef.child("UserEmail");
 
         // Validate user data
         // No email entered
@@ -117,6 +126,8 @@ public class RegistrationActivity extends AppCompatActivity {
         loadingCircle.setVisibility(View.VISIBLE);
 
 
+        // Add user data to db
+        userEmailRef.setValue(uEmail);
         // Register the new user in firebase
         fbAuth.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
