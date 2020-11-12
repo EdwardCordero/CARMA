@@ -77,6 +77,7 @@ tools:context=".CarInformation">
 
     <!-- this text view is to display the current mileage.   -->
     <TextView
+
         android:id="@+id/currentMileage"
         android:layout_width="222dp"
         android:layout_height="74dp"
@@ -91,5 +92,17 @@ tools:context=".CarInformation">
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.331" />
+
+        android:layout_width="145dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="237dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="417dp"
+        android:text="Car Information"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
