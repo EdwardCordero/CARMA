@@ -1,5 +1,6 @@
 package com.finalproject.app.auth;
 
+import com.finalproject.app.db.User;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegistrationActivity extends AppCompatActivity {
     /***********************************
@@ -40,6 +43,12 @@ public class RegistrationActivity extends AppCompatActivity {
      ************************************/
     // Firebase Auth instance
     private FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+
+
+    /***********************************
+     * FIREBASE DB Instance Variables
+     ************************************/
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users");
 
     @NonNull
     public static Intent createIntent(@NonNull Context context){
@@ -73,8 +82,17 @@ public class RegistrationActivity extends AppCompatActivity {
     }// End onCreate
 
 
+    // writeNewUser()
+    // writes new user data to DB
+    private void writeNewUser(String userID, String userEmail){
+        User user = new User(userEmail);
+        rootRef.child(userID).setValue(user);
+    }
+
+
+
     public void handleNewUserRegistration(){
-        String uEmail = mUserEmail.getText().toString().trim();
+        final String uEmail = mUserEmail.getText().toString().trim();
         String uPasswd = mUserPassword.getText().toString().trim();
         String confirmPasswd = mConfirmPassword.getText().toString().trim();
 
@@ -117,12 +135,16 @@ public class RegistrationActivity extends AppCompatActivity {
         loadingCircle.setVisibility(View.VISIBLE);
 
 
+
         // Register the new user in firebase
         fbAuth.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 loadingCircle.setVisibility(View.GONE);
                 if(task.isSuccessful()){
+                    // Add user data to db
+                    FirebaseUser newUser = task.getResult().getUser();
+                    writeNewUser(newUser.getUid(), uEmail);
                     Toast.makeText(RegistrationActivity.this, "Registered Successfully.", Toast.LENGTH_SHORT).show();
                     // Log user in to main activity
                     Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
