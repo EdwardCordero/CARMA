@@ -8,37 +8,30 @@
 
 
     <TextView
-        android:id="@+id/mostRecent_title"
+        android:id="@+id/infoTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Most Recent Maintenance: "
+        android:text="Part Title "
         android:textColor="@color/colorAccent"
-        android:textSize="20sp"
+        android:layout_marginBottom="20dp"
+        android:textSize="22sp"
         android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/mostRecent_details"
-        android:textColor="@color/colorAccent"
-        android:layout_marginBottom="50dp"
-        android:layout_width="match_parent"
+        android:id="@+id/infoDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Details" />
+        android:text="Date"
+        android:textSize="13dp"
+        android:textColor="@color/colorAccent" />
 
     <TextView
-        android:id="@+id/upcoming_title"
-        android:textColor="@color/colorAccent"
+        android:id="@+id/infoDetails"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Upcoming Maintenance:"
-
-        android:textSize="20sp"
+        android:layout_height="25dp"
+        android:text="Info"
+        android:textSize="18dp"
+        android:textColor="@color/colorAccent"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/upcoming_details"
-        android:textColor="@color/colorAccent"
-        android:layout_marginBottom="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Details" />
 </LinearLayout>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -102,6 +103,17 @@ public class CarInformation extends Fragment {
                 popupwindow = new PopupWindow(container, pop_width,pop_height, true);
                 popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
 
+
+                //
+                //Setting information
+                TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
+                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
+                infoTitle.setText("Brakes");
+                infoDetails.setText("Wagner PD349 Ceramic Disc Brakes  ");
+                infoDate.setText("August 04, 2019");
+
+
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -124,6 +136,15 @@ public class CarInformation extends Fragment {
                 popupwindow = new PopupWindow(container, pop_width, pop_height, true);
                 popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
 
+                //
+                // setting information
+                TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
+                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
+                infoTitle.setText("Engine Oil");
+                infoDetails.setText("Valvoline Advanced Full Synthetic SAE 5W-20 Motor Oil 5 QT");
+                infoDate.setText("March 19, 2019");
+
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -131,7 +152,7 @@ public class CarInformation extends Fragment {
                         return true;
                     }
                 });
-                Toast.makeText(getContext(),"Fluids", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Engine Oil", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -145,6 +166,16 @@ public class CarInformation extends Fragment {
 
                 popupwindow = new PopupWindow(container, pop_width, pop_height, true);
                 popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
+
+
+                //
+                // setting information
+                TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
+                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
+                infoTitle.setText("Tires");
+                infoDetails.setText("Michelin Defender T+H ");
+                infoDate.setText("January 17, 2019");
 
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -168,6 +199,16 @@ public class CarInformation extends Fragment {
                 popupwindow = new PopupWindow(container, pop_width, pop_height, true);
                 popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
 
+
+                //
+                // setting information
+                TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
+                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
+                infoTitle.setText("Belts");
+                infoDetails.setText("Gates P22-5M-15AL ");
+                infoDate.setText("August 04, 2019");
+
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -190,10 +231,19 @@ public class CarInformation extends Fragment {
                 popupwindow = new PopupWindow(container, pop_width, pop_height, true);
                 popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
 
+                TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
+                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
+                infoTitle.setText("Air filter");
+                infoDetails.setText("STP Air Filter SA9711 ");
+                infoDate.setText("December 05, 2019");
+
+
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
                         popupwindow.dismiss();
+
                         return true;
                     }
                 });
