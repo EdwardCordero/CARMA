@@ -177,7 +177,7 @@ public class AuthUiActivity extends AppCompatActivity {
     public void handleLoginRegister() {
         startActivityForResult(
                 AuthUI.getInstance()
-                        .createSignInIntentBuilder()
+                        .createSignInIntentBuilder().setIsSmartLockEnabled(false)
                         .setAvailableProviders(providers)
                         .setTosAndPrivacyPolicyUrls("https://example.com", "https://example.com")
                         // Reserved for when our logo is finsihed
