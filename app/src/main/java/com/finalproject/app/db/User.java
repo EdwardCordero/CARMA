@@ -1,5 +1,6 @@
 package com.finalproject.app.db;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 @IgnoreExtraProperties
@@ -32,6 +33,5 @@ public class User {
     public String getUserEmail(){
         return userEmail;
     }
-
 
 }
