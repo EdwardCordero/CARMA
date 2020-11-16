@@ -30,7 +30,7 @@
         android:layout_marginTop="300dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnInfo"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdateMileage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -48,10 +48,10 @@
     </androidx.cardview.widget.CardView>
 
     <Button
-        android:id="@+id/btnInfo"
+        android:id="@+id/btnUpdateMileage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Information"
+        android:text="Update Mileage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +79,7 @@
         android:layout_marginTop="50dp"
         app:cardCornerRadius="10dp"
         app:cardElevation="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnInfo"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdateMileage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -104,7 +104,7 @@
         android:layout_gravity="center"
         app:cardCornerRadius="10dp"
         app:cardElevation="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnInfo"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdateMileage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
@@ -116,10 +116,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:isScrollContainer="true"
+            android:scrollbars="vertical"
             android:textAlignment="center"
             android:textSize="12dp"
-            android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.cardview.widget.CardView>
 
     <TextView

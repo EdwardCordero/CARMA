@@ -3,8 +3,6 @@ package com.finalproject.app;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -14,13 +12,8 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,7 +78,7 @@ public class Reminder extends Fragment {
         View v = inflater.inflate(R.layout.fragment_reminder, container, false);
 
         // Declare Buttons and TextViews elements from Reminders page
-        final Button btnInfo = (Button)v.findViewById(R.id.btnInfo);
+        final Button btnUpdateMileage = (Button)v.findViewById(R.id.btnUpdateMileage);
         final TextView currentMileage = (TextView)v.findViewById(R.id.textViewCurrentMileage);
         final TextView recentMaintenance = (TextView)v.findViewById(R.id.textViewRecentMain);
         final TextView upcomingMaintenance = (TextView)v.findViewById(R.id.textViewUpcomingMaintenance);
@@ -97,9 +90,15 @@ public class Reminder extends Fragment {
         recentMaintenance.setText(recentEveryFiveThousand());
         upcomingMaintenance.setText(everyThirtyThousand(mileage));
 
-//        btnInfo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v){
+        // Controls what happens when you click on the Update Mileage Button
+        btnUpdateMileage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                //Pops Up a Window that asks to update mileage
+                Intent popUp = new Intent(getContext(),popActivity.class);
+                startActivity(popUp);
+
+                // Gets information from Database
 //                name.addValueEventListener(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -112,9 +111,9 @@ public class Reminder extends Fragment {
 //
 //                    }
 //                });
-//
-//            }
-//        });
+
+            }
+        });
 
         return v;
     }
