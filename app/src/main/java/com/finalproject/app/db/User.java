@@ -2,7 +2,6 @@ package com.finalproject.app.db;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-@IgnoreExtraProperties
 public class User {
     // User data
     String userName;
