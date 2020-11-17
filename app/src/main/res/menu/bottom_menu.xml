@@ -12,11 +12,11 @@
         android:icon="@drawable/ic_reminders"
         android:title="Reminders" />
     <item
-        android:id="@+id/settings"
-        android:icon="@drawable/ic_settings"
-        android:title="Settings" />
-    <item
         android:id="@+id/garage"
         android:icon="@drawable/ic_car"
         android:title="Garage" />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="Settings" />
 </menu>
