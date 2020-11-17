@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.finalproject.app.db.User;
+import com.finalproject.app.db.VehicleName;
 import com.google.firebase.FirebaseApiNotAvailableException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -28,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.lang.reflect.Array;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -63,9 +67,13 @@ public class Garage extends Fragment {
     private TextView make, model, year, bodystyle, mileage, licensePlate, oilGrade, oilChange, tireRotation, tireService,
                      tireDiameter, insuranceNum, registrationExp;
 
-    // Database Variables
-    private DatabaseReference carDatabaseReference;
+    // Variables for Spinner name function
+    private EditText sp_Name;
 
+    private Button sp_Save, sp_Cancel;
+
+    // Database Variables
+    DatabaseReference carRef;
 
     public Garage() {
         // Required empty public constructor
@@ -111,6 +119,8 @@ public class Garage extends Fragment {
         myAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
         carList.setAdapter(myAdapter);
 
+        // Sets up database for car registration
+        carRef = FirebaseDatabase.getInstance().getReference();
         // initializes text for garage
         make = (TextView) view.findViewById(R.id.MakeText);
         model = (TextView) view.findViewById(R.id.ModelText);
@@ -126,15 +136,12 @@ public class Garage extends Fragment {
         insuranceNum = (TextView) view.findViewById(R.id.InsurancePolicyNumText);
         registrationExp = (TextView) view.findViewById(R.id.RegistrationExperationText);
 
-        // Sets up database for car registration
-        carDatabaseReference = FirebaseDatabase.getInstance().getReference();
-
         //Creates button and adds listener
         vr_AddVehicle = (Button) view.findViewById(R.id.AddCarButton);
         vr_AddVehicle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterNewVehicle();
+                NameVehicle();
             }
         });
         //Creates listener for both Recall and Warranty buttons to show popups
@@ -199,6 +206,41 @@ public class Garage extends Fragment {
             }
         });
     }
+
+
+    // Creates popup to name the vehicle the user will register
+    public void NameVehicle(){
+        dialogBuilder = new AlertDialog.Builder(getActivity());
+        final View namevehiclePopup = getLayoutInflater().inflate(R.layout.spinnername_popup, null);
+
+        //Creates the text box for the name
+        sp_Name = (EditText) namevehiclePopup.findViewById(R.id.VehicleName);
+        //Creates the save button
+        sp_Save = (Button) namevehiclePopup.findViewById(R.id.SaveNameButton);
+        sp_Cancel = (Button) namevehiclePopup.findViewById(R.id.CancelNameButton);
+
+        dialogBuilder.setView(namevehiclePopup);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        //Saves name to spinner string array and adds it to the spinner
+        sp_Save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                RegisterNewVehicle();
+            }
+        });
+        //closes popup when user clicks cancel.
+        sp_Cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //define cancel button here!!
+                dialog.dismiss();
+            }
+        });
+    }
+
     //Creates popup when user clicks button to add vehicle
     public void RegisterNewVehicle() {
 
@@ -228,17 +270,24 @@ public class Garage extends Fragment {
         dialog = dialogBuilder.create();
         dialog.show();
 
+        // Strings for database registration
+        final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String key = carRef.child("Cars").push().getKey();
+
         //Still need to make save function
         vr_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //define save button here!!
-                CarRegistration carRegistration = new CarRegistration(vr_Make.getText().toString(), vr_Model.getText().toString(), vr_Year.getText().toString(),
+                CarRegistration carRegistration = new CarRegistration(sp_Name.getText().toString(),vr_Make.getText().toString(), vr_Model.getText().toString(), vr_Year.getText().toString(),
                         vr_BodyStyle.getText().toString(), vr_Mileage.getText().toString(), vr_LicensePlate.getText().toString(), vr_OilChangeMiles.getText().toString(),
                         vr_OilGrade.getText().toString(), vr_TireRotationMiles.getText().toString(), vr_TireServiceType.getText().toString(), vr_TireDiameter.getText().toString(),
                         vr_InsurancePolicyNum.getText().toString(), vr_RegistrationExperation.getText().toString());
-                carDatabaseReference.child("Cars").push().setValue(carRegistration);
 
+                Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/user-cars/" + userID + "/" + key, carRegistration);
+
+                carRef.updateChildren(childUpdates);
                 dialog.dismiss();
             }
         });
