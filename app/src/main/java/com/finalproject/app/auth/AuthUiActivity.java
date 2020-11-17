@@ -1,6 +1,7 @@
 package com.finalproject.app.auth;
 
 
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Arrays;
 import java.util.List;
@@ -52,7 +55,12 @@ public class AuthUiActivity extends AppCompatActivity {
             new AuthUI.IdpConfig.GoogleBuilder().build());
 
     // Firebase Auth instance
-    private  FirebaseAuth fbAuth = FirebaseAuth.getInstance();;
+    private  FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+
+    /***********************************
+     * FIREBASE DB Instance Variables
+     ************************************/
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
     @NonNull
     public static Intent createIntent(@NonNull Context context){
@@ -169,7 +177,7 @@ public class AuthUiActivity extends AppCompatActivity {
     public void handleLoginRegister() {
         startActivityForResult(
                 AuthUI.getInstance()
-                        .createSignInIntentBuilder()
+                        .createSignInIntentBuilder().setIsSmartLockEnabled(false)
                         .setAvailableProviders(providers)
                         .setTosAndPrivacyPolicyUrls("https://example.com", "https://example.com")
                         // Reserved for when our logo is finsihed
