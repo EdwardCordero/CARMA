@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Final Project</string>
+    <string name="app_name">Carma</string>
     <string name="action_sign_out">Sign Out</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="prompt_name">Name</string>
