@@ -42,6 +42,8 @@ public class User {
 
     public String getUserLstName() { return LastName; }
 
+    public String getFullName() { return FirstName + " " + LastName; }
+
 
 
 }
