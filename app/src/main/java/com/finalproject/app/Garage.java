@@ -2,15 +2,21 @@ package com.finalproject.app;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,8 +27,12 @@ import com.finalproject.app.db.User;
 import com.finalproject.app.db.VehicleName;
 import com.google.firebase.FirebaseApiNotAvailableException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -30,10 +40,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Nullable;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,6 +86,7 @@ public class Garage extends Fragment {
     // Database Variables
     DatabaseReference carRef;
 
+
     public Garage() {
         // Required empty public constructor
     }
@@ -87,7 +99,7 @@ public class Garage extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment Garage.
      */
-    // TODO: Rename and change types and number of parameters
+
     public static Garage newInstance(String param1, String param2) {
         Garage fragment = new Garage();
         Bundle args = new Bundle();
@@ -109,18 +121,13 @@ public class Garage extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_garage, container, false);
-        // Creates Spinner for car list
-        Spinner carList = (Spinner) view.findViewById(R.id.CarList);
 
-        ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.CarList));
-        myAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        carList.setAdapter(myAdapter);
+        // Inflate the layout for this fragment
+        final View view = inflater.inflate(R.layout.fragment_garage, container, false);
 
         // Sets up database for car registration
         carRef = FirebaseDatabase.getInstance().getReference();
+
         // initializes text for garage
         make = (TextView) view.findViewById(R.id.MakeText);
         model = (TextView) view.findViewById(R.id.ModelText);
@@ -160,6 +167,75 @@ public class Garage extends Fragment {
                 WarrantyButtonListener();
             }
         });
+// Strings for database registration
+        final String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final Spinner spinnerCar = (Spinner) view.findViewById(R.id.CarList);
+        final DatabaseReference userCarRef = carRef.child("user-cars").child(uID);
+        final ArrayList<CarRegistration> cars = new ArrayList<CarRegistration>();
+
+        userCarRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                final List<String> carCollectionList = new ArrayList<String>();
+
+                for (DataSnapshot carSnapshot: snapshot.getChildren()) {
+                    CarRegistration carInfo = carSnapshot.getValue(CarRegistration.class);
+                    carCollectionList.add(carInfo.getName());
+
+                    cars.add(carInfo);
+                }
+                ArrayAdapter<String> carAdapter = new ArrayAdapter<String>(getContext(),
+                        android.R.layout.simple_list_item_1, carCollectionList);
+                carAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+                spinnerCar.setAdapter(carAdapter);
+
+                // Sets up spinner onClick event
+                spinnerCar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
+                        String makeDB = cars.get(position).getMake();
+                        make.setText(makeDB);
+                        String modelDB = cars.get(position).getModel();
+                        model.setText(modelDB);
+                        String yearDB = cars.get(position).getYear();
+                        year.setText(yearDB);
+                        String bodystyleDB = cars.get(position).getBodystyle();
+                        bodystyle.setText(bodystyleDB);
+                        String mileageDB = cars.get(position).getMileage();
+                        mileage.setText(mileageDB);
+                        String licenseplateDB = cars.get(position).getLicensePlate();
+                        licensePlate.setText(licenseplateDB);
+                        String tirediameterDB = cars.get(position).getTireDiameter();
+                        tireDiameter.setText(tirediameterDB);
+                        String tireserviceDB = cars.get(position).getTireService();
+                        tireService.setText(tireserviceDB);
+                        String tirerotationDB = cars.get(position).getTireRotation();
+                        tireRotation.setText(tirerotationDB);
+                        String oilgradeDB = cars.get(position).getOilGrade();
+                        oilGrade.setText(oilgradeDB);
+                        String oilchangeDB = cars.get(position).getOilChange();
+                        oilChange.setText(oilchangeDB);
+                        String insurancenumDB = cars.get(position).getInsuranceNum();
+                        insuranceNum.setText(insurancenumDB);
+                        String registrationexpDB = cars.get(position).getRegistrationExp();
+                        registrationExp.setText(registrationexpDB);
+
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         return view;
     }
 
@@ -285,6 +361,7 @@ public class Garage extends Fragment {
                         vr_InsurancePolicyNum.getText().toString(), vr_RegistrationExperation.getText().toString());
 
                 Map<String, Object> childUpdates = new HashMap<>();
+                childUpdates.put("/Cars/" + key, carRegistration);
                 childUpdates.put("/user-cars/" + userID + "/" + key, carRegistration);
 
                 carRef.updateChildren(childUpdates);

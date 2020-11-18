@@ -1,13 +1,12 @@
 package com.finalproject.app.db;
 
+import com.finalproject.app.Garage;
 import com.google.firebase.auth.FirebaseAuth;
 
-@IgnoreExtraProperties
 public class User {
     // User data
     String userName;
     String userEmail;
-
     // Default constructor
     // Required for calls to DataSnapshot.getValue(User.class)
     public User(){
