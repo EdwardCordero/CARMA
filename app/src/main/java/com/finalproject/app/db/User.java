@@ -1,10 +1,11 @@
 package com.finalproject.app.db;
 
-import com.google.firebase.database.IgnoreExtraProperties;
+import com.finalproject.app.Garage;
+import com.google.firebase.auth.FirebaseAuth;
 
-@IgnoreExtraProperties
 public class User {
     // User data
+
     String FirstName;
     String LastName;
     String Username;
@@ -38,11 +39,13 @@ public class User {
         return Email;
     }
 
+
     public String getUserFstName() { return FirstName; }
 
     public String getUserLstName() { return LastName; }
 
     public String getFullName() { return FirstName + " " + LastName; }
+
 
 
 

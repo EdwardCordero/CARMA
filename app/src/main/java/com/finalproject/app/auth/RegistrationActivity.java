@@ -52,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /***********************************
      * FIREBASE DB Instance Variables
      ************************************/
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users");
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
     @NonNull
     public static Intent createIntent(@NonNull Context context){

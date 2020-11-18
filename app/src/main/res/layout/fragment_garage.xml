@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".VehicleRegistration">
+
+    <Spinner
+        android:id="@+id/CarList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.105"
+        android:entries="@array/CarList"
+        />
+    <TextView
+        android:id="@+id/GarageTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Garage"
+        android:textColor="#000"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <Button
+        android:id="@+id/AddCarButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="495dp"
+        android:gravity="center"
+        style = "@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="#318FFF"
+        android:textStyle="bold"
+        android:text="Add New Vehicle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/GarageTitle"
+        app:layout_constraintVertical_bias="0.279" />
+
+    <TextView
+        android:id="@+id/VehicleInformation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vehicle Information"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/AddCarButton"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/MakeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/make"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/VehicleInformation" />
+
+    <TextView
+        android:id="@+id/ModelText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        android:text="@string/model"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintRight_toLeftOf="@id/YearText"
+        app:layout_constraintTop_toBottomOf="@+id/VehicleInformation" />
+
+    <TextView
+        android:id="@+id/YearText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/year"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/VehicleInformation" />
+
+    <TextView
+        android:id="@+id/MileageText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/mileage"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MakeText" />
+
+    <TextView
+        android:id="@+id/LicensePlateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/licensePlate"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/BodyStyleText" />
+
+    <TextView
+        android:id="@+id/BodyStyleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/bodyStyle"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/MakeText" />
+
+    <TextView
+        android:id="@+id/TireInformationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tire Information"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LicensePlateText"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/TireDiameterText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tireDiameter"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TireInformationText" />
+
+    <TextView
+        android:id="@+id/TireServiceTypeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tireService"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TireInformationText" />
+
+    <TextView
+        android:id="@+id/TireRotationMilesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/tireRotation"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TireDiameterText" />
+
+    <TextView
+        android:id="@+id/OilInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Oil Information"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TireRotationMilesText"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/OilGradeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/oilGrade"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OilInformation" />
+
+    <TextView
+        android:id="@+id/OilChangeMilesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/oilChange"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OilInformation"
+
+        />
+
+    <TextView
+        android:id="@+id/InsuranceInformationText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Insurance Information"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/OilChangeMilesText"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <TextView
+        android:id="@+id/RegistrationExperationText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/registrationExp"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InsuranceInformationText" />
+
+    <TextView
+        android:id="@+id/InsurancePolicyNumText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insuranceNum"
+        android:background="#E7E7E7"
+        android:textSize="20sp"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InsuranceInformationText" />
+
+    <TextView
+        android:id="@+id/PremiumFeaturesText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Premium Features"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginTop="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/InsurancePolicyNumText"
+        app:layout_constraintVertical_bias="0.105" />
+
+    <Button
+        android:id="@+id/RecallsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recalls"
+        style = "@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="#318FFF"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/PremiumFeaturesText"
+        app:layout_constraintVertical_bias="0.279" />
+
+    <Button
+        android:id="@+id/WarrantyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warranties"
+        style = "@style/Widget.AppCompat.Button.Borderless"
+        android:textColor="#318FFF"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/RecallsButton"
+        app:layout_constraintVertical_bias="0.279"
+        />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/WarrantyButton"
+        app:menu="@menu/bottom_menu" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
