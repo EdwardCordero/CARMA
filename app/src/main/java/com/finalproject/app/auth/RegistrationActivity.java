@@ -24,9 +24,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class RegistrationActivity extends AppCompatActivity {
     /***********************************
@@ -103,11 +106,10 @@ public class RegistrationActivity extends AppCompatActivity {
         final String uLstName = mLastName.getText().toString().trim();
         final String username = mUserName.getText().toString().trim();
         final String uEmail = mUserEmail.getText().toString().trim();
-        String uPasswd = mUserPassword.getText().toString().trim();
+        final String uPasswd = mUserPassword.getText().toString().trim();
         String confirmPasswd = mConfirmPassword.getText().toString().trim();
 
-        // Query object for checking unique usernames
-        Query usernameQuery = FirebaseDatabase.getInstance().getReference().child("Users");
+
 
         // Validate user data
         // No data entered for first and last name
@@ -170,7 +172,7 @@ public class RegistrationActivity extends AppCompatActivity {
         loadingCircle.setVisibility(View.VISIBLE);
 
         // Register the new user in firebase
-        fbAuth.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        fbAuth.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 loadingCircle.setVisibility(View.GONE);
@@ -187,7 +189,7 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(RegistrationActivity.this, "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
-        });
+        }); // End of createUserWithEmailAndPassword
 
     }
 
