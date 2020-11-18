@@ -5,6 +5,8 @@ import com.google.firebase.database.IgnoreExtraProperties;
 @IgnoreExtraProperties
 public class User {
     // User data
+    String userFstName;
+    String userLstName;
     String userName;
     String userEmail;
 
@@ -14,8 +16,10 @@ public class User {
 
     }
 
-    // Constructor for both username and email arguments
-    public User(String uname, String email){
+    // Constructor for all user arguments
+    public User(String fname, String lname, String uname, String email){
+        this.userFstName = fname;
+        this.userLstName = lname;
         this.userName = uname;
         this.userEmail = email;
     }
@@ -25,12 +29,21 @@ public class User {
         this.userEmail = email;
     }
 
+    // methods
     public String getUserName(){
         return userName;
     }
 
     public String getUserEmail(){
         return userEmail;
+    }
+
+    public String getUserFstName() { return userFstName; }
+
+    public String getUserLstName() { return userLstName; }
+
+    public String getFullName() {
+        return  userFstName + " " + userLstName;
     }
 
 
