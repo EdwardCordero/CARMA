@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".auth.AuthUiActivity">
+            android:name=".auth.LoginActivity">
         </activity>
         <activity
             android:name=".auth.RegistrationActivity">
