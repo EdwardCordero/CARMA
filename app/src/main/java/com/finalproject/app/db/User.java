@@ -5,31 +5,48 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class User {
     // User data
-    String userName;
-    String userEmail;
+
+    String FirstName;
+    String LastName;
+    String Username;
+    String Email;
+
     // Default constructor
     // Required for calls to DataSnapshot.getValue(User.class)
     public User(){
 
     }
 
-    // Constructor for both username and email arguments
-    public User(String uname, String email){
-        this.userName = uname;
-        this.userEmail = email;
+    // Constructor for all user arguments
+    public User(String fname, String lname, String uname, String email){
+        this.FirstName = fname;
+        this.LastName = lname;
+        this.Username = uname;
+        this.Email = email;
     }
 
     // Constructor for just email arg
     public User(String email){
-        this.userEmail = email;
+        this.Email = email;
     }
 
+    // methods
     public String getUserName(){
-        return userName;
+        return Username;
     }
 
     public String getUserEmail(){
-        return userEmail;
+        return Email;
     }
+
+
+    public String getUserFstName() { return FirstName; }
+
+    public String getUserLstName() { return LastName; }
+
+    public String getFullName() { return FirstName + " " + LastName; }
+
+
+
 
 }
