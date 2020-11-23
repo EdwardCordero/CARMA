@@ -4,15 +4,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.firebase.ui.auth.data.model.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class popActivity extends Activity {
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference mRef = mDatabase.getReference("user-cars");
+    DatabaseReference uid = mRef.child(user.getUid());
+    DatabaseReference mileageRef = uid.child("mileage");
+
     Button btnClose;
     Button btnUpdate;
 
@@ -30,14 +42,16 @@ public class popActivity extends Activity {
             }
         });
 
-        // Declaration for the update button.
-//        btnUpdate = (Button)findViewById(R.id.buttonUpdateMileagePop);
-//        btnUpdate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+         //Declaration for the update button.
+        btnUpdate = (Button)findViewById(R.id.buttonUpdateMileagePop);
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                EditText updateMileage = (EditText)findViewById(R.id.EditTextUpdateMileage);
+                final Editable newMileage = updateMileage.getText();
+                mileageRef.setValue(newMileage);
+            }
+        });
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
