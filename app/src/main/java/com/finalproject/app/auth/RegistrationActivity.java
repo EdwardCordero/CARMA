@@ -52,7 +52,8 @@ public class RegistrationActivity extends AppCompatActivity {
     /***********************************
      * FIREBASE DB Instance Variables
      ************************************/
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users");
+    private boolean isTaken;
 
     @NonNull
     public static Intent createIntent(@NonNull Context context){
@@ -133,6 +134,34 @@ public class RegistrationActivity extends AppCompatActivity {
         }
 
         // Check if username already exists in DB
+        // Query snapshot of db
+        Query usernameRef = FirebaseDatabase.getInstance().getReference("Users").orderByChild("userName").equalTo(username);
+        usernameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // username is taken
+                if (snapshot.exists()){
+                    Toast.makeText(getApplicationContext(), "Username already exists. Please try other username.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        // display error message if username is taken
+        if(isTaken){
+            mUserName.setError("Username is already taken. Please chose a different username.");
+            mUserName.requestFocus();
+            return;
+        }
+
+
 
         // No email entered
         if(TextUtils.isEmpty(uEmail)){
