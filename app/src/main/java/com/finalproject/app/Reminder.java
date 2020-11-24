@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
@@ -35,7 +36,14 @@ public class Reminder extends Fragment {
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     DatabaseReference carRef = mDatabase.getReference();
     DatabaseReference userCarRef = carRef.child("user-cars").child("0f4ag8w46qfwmBUf9FLmu2c4tl53");
-//    DatabaseReference mileageRef = uid.child();
+    DatabaseReference specificCarRef = userCarRef.child("-MMUCgPWu4hXNlVfDN7M");
+    DatabaseReference mileageRef = specificCarRef.child("mileage");
+
+    int initialMileage = 0;
+    String mileageRightNow;
+    int mileageRightNowInt;
+
+    //    DatabaseReference mileageRef = uid.child();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -95,38 +103,33 @@ public class Reminder extends Fragment {
         recentMaintenance.setMovementMethod(new ScrollingMovementMethod());
         upcomingMaintenance.setMovementMethod((new ScrollingMovementMethod()));
 
-        int initialMileage = 120000;
-        final int mileageRightNow = 130000;
 
-
-//         // Gets information from Database
-//
-//        userCarRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//               String data = (String) snapshot.getValue();
-//               currentMileage.setText(data);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
 
         while(true) {
 
-            // Static Number for mileage for testing purpose
-//            String currentUser = user.getUid();
 
-            initialMileage = maintenanceRoutine(initialMileage,mileageRightNow,currentMileage,
-                    recentMaintenance, upcomingMaintenance);
+            mileageRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    mileageRightNow = snapshot.getValue().toString();
+                    currentMileage.setText("Current mileage is " + mileageRightNow);
 
-            // Gets information from Database
+                    mileageRightNowInt = currentMileageInteger(mileageRightNow);
+                    maintenanceRoutine(initialMileage,mileageRightNowInt,currentMileage,recentMaintenance,upcomingMaintenance);
 
-//        uid.addValueEventListener(new ValueEventListener() {
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+                //             Gets information from Database
+
+//        mileageRef.addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                String data = snapshot.getValue().toString();
@@ -140,6 +143,7 @@ public class Reminder extends Fragment {
 //        });
 
 
+
             // Controls what happens when you click on the Update Mileage Button
             btnUpdateMileage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -148,6 +152,7 @@ public class Reminder extends Fragment {
 
                     Intent popUp = new Intent(getContext(), popActivity.class);
                     startActivity(popUp);
+
 
                 }
             });
@@ -262,7 +267,6 @@ public class Reminder extends Fragment {
     public int maintenanceRoutine(int initialMileage, int currentMileage, TextView Mileage,
                                   TextView recentMaintenance, TextView upcomingMaintenance ) {
 
-        getCurrentMileage(Mileage,currentMileage);
 
         if (currentMileage - initialMileage < 5000){
              upcomingMaintenance.setText(everyFiveThousand(currentMileage));
@@ -304,6 +308,16 @@ public class Reminder extends Fragment {
         return initialMileage;
     }
 
-
+    public int currentMileageInteger(String currentMileageString){
+        int currentMileageInteger;
+        if (currentMileageString == null){
+            currentMileageInteger = 15000;
+        }
+        else {
+            currentMileageInteger = Integer.valueOf(currentMileageString);
+            return currentMileageInteger;
+        }
+        return currentMileageInteger;
+    }
 
 }
