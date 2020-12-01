@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.method.ScrollingMovementMethod;
@@ -16,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,13 +42,12 @@ public class Reminder extends Fragment {
     String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     DatabaseReference carRef = mDatabase.getReference();
-    DatabaseReference userCarRef = carRef.child("user-cars").child("0f4ag8w46qfwmBUf9FLmu2c4tl53");
-    DatabaseReference specificCarRef = userCarRef.child("-MMUCgPWu4hXNlVfDN7M");
-    DatabaseReference mileageRef = specificCarRef.child("mileage");
+    DatabaseReference userCarRef = carRef.child("user-cars").child(user);
+    DatabaseReference specificCarRef;
+    DatabaseReference mileageRef;
 
     int initialMileage = 0;
-    String mileageRightNow;
-    int mileageRightNowInt;
+    String data;
 
     //    DatabaseReference mileageRef = uid.child();
 
@@ -97,6 +103,7 @@ public class Reminder extends Fragment {
         final TextView currentMileage = (TextView)v.findViewById(R.id.textViewCurrentMileage);
         final TextView recentMaintenance = (TextView)v.findViewById(R.id.textViewRecentMain);
         final TextView upcomingMaintenance = (TextView)v.findViewById(R.id.textViewUpcomingMaintenance);
+        final TextView getTheCurrentMileage = (TextView)v.findViewById(R.id.MileageText);
 
         // Allows textviews to be scrollable
         currentMileage.setMovementMethod(new ScrollingMovementMethod());
@@ -108,41 +115,38 @@ public class Reminder extends Fragment {
 
         while(true) {
 
+         userCarRef.addValueEventListener(new ValueEventListener() {
+             @Override
+             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                 for(DataSnapshot ds : snapshot.getChildren()){
+                     String uid = ds.getKey();
+                     specificCarRef = userCarRef.child(uid);
+                     mileageRef = specificCarRef.child("mileage");
 
-            mileageRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    mileageRightNow = snapshot.getValue().toString();
-                    currentMileage.setText("Current mileage is " + mileageRightNow);
+                     mileageRef.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                             data = snapshot.getValue().toString();
+                             int dataInt = Integer.parseInt(data);
+                             getCurrentMileage(currentMileage,dataInt);
+                             maintenanceRoutine(initialMileage,dataInt,recentMaintenance,upcomingMaintenance);
 
-                    mileageRightNowInt = currentMileageInteger(mileageRightNow);
-                    maintenanceRoutine(initialMileage,mileageRightNowInt,currentMileage,recentMaintenance,upcomingMaintenance);
+                         }
 
-                }
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
+                         }
+                     });
 
-                }
-            });
+                 }
+             }
 
+             @Override
+             public void onCancelled(@NonNull DatabaseError error) {
 
-                //             Gets information from Database
-
-//        mileageRef.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                String data = snapshot.getValue().toString();
-//                currentMileage.setText(data);
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-
-
+             }
+         });
 
             // Controls what happens when you click on the Update Mileage Button
             btnUpdateMileage.setOnClickListener(new View.OnClickListener() {
@@ -264,7 +268,7 @@ public class Reminder extends Fragment {
                 "• Changed the Power Steering Fluid";
     }
 
-    public int maintenanceRoutine(int initialMileage, int currentMileage, TextView Mileage,
+    public int maintenanceRoutine(int initialMileage, int currentMileage,
                                   TextView recentMaintenance, TextView upcomingMaintenance ) {
 
 

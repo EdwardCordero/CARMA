@@ -23,12 +23,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class popActivity extends Activity {
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference mRef = mDatabase.getReference("user-cars");
-    DatabaseReference uid = mRef.child("0f4ag8w46qfwmBUf9FLmu2c4tl53");
-    DatabaseReference carRef = uid.child("-MMUCgPWu4hXNlVfDN7M");
-    DatabaseReference mileageRef = carRef.child("mileage");
+    DatabaseReference carRef = mDatabase.getReference();
+    DatabaseReference userCarRef = carRef.child("user-cars").child(user);
+    DatabaseReference specificCarRef;
+    DatabaseReference mileageRef;
 
     Button btnClose;
     Button btnUpdate;
@@ -53,9 +53,26 @@ public class popActivity extends Activity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-                EditText updateMileage = (EditText)findViewById(R.id.editTextUpdateMileage);
-                String newMileage = updateMileage.getText().toString();
-                mileageRef.setValue(Integer.valueOf(newMileage));
+                final EditText updateMileage = (EditText)findViewById(R.id.editTextUpdateMileage);
+                userCarRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot ds : snapshot.getChildren()){
+                            String uid = ds.getKey();
+                            specificCarRef = userCarRef.child(uid);
+                            mileageRef = specificCarRef.child("mileage");
+
+                            String newData = updateMileage.getText().toString();
+                            mileageRef.setValue(newData);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
                 finish();
             }
         });
