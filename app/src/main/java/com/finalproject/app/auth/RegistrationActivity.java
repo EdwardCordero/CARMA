@@ -52,7 +52,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /***********************************
      * FIREBASE DB Instance Variables
      ************************************/
-    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("Users");
 
     @NonNull
     public static Intent createIntent(@NonNull Context context){
@@ -63,8 +63,6 @@ public class RegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.auth_register_form);
-        // Check if user is signed in already
-
 
         // Registration input data
         mFirstName = findViewById(R.id.firstname);
@@ -132,8 +130,6 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        // Check if username already exists in DB
-
         // No email entered
         if(TextUtils.isEmpty(uEmail)){
             mUserEmail.setError("Email is required to create an account");
@@ -168,30 +164,54 @@ public class RegistrationActivity extends AppCompatActivity {
             return;
         }
 
-        // Display loading process
-        loadingCircle.setVisibility(View.VISIBLE);
 
-        // Register the new user in firebase
-        fbAuth.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+
+        // Check if username already exists in DB
+        // Query snapshot of db
+        Query usernameRef = FirebaseDatabase.getInstance().getReference("Users").orderByChild("userName").equalTo(username);
+        usernameRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                loadingCircle.setVisibility(View.GONE);
-                if(task.isSuccessful()){
-                    // Add user data to db
-                    FirebaseUser newUser = task.getResult().getUser();
-                    writeNewUser(newUser.getUid(), uFstName, uLstName, username, uEmail);
-                    Toast.makeText(RegistrationActivity.this, "Registered Successfully.", Toast.LENGTH_SHORT).show();
-                    // Log user in to main activity
-                    Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else {
-                    Toast.makeText(RegistrationActivity.this, "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // username is taken
+                if (snapshot.getChildrenCount() > 0){
+                    Toast.makeText(RegistrationActivity.this, "Please choose a different username.", Toast.LENGTH_SHORT).show();
+                    mUserName.setError("Username is already taken. Please chose a different username.");
+                    mUserName.requestFocus();
                 }
+                else{
+                    // Display loading process
+                    loadingCircle.setVisibility(View.VISIBLE);
+                    // Register the new user in firebase
+                    fbAuth.createUserWithEmailAndPassword(uEmail, uPasswd).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            loadingCircle.setVisibility(View.GONE);
+                            if(task.isSuccessful()){
+                                // Add user data to db
+                                FirebaseUser newUser = task.getResult().getUser();
+                                writeNewUser(newUser.getUid(), uFstName, uLstName, username, uEmail);
+                                Toast.makeText(RegistrationActivity.this, "Registered Successfully.", Toast.LENGTH_SHORT).show();
+                                // Log user in to main activity
+                                Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else {
+                                Toast.makeText(RegistrationActivity.this, "ERROR: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }); // End of createUserWithEmailAndPassword
+                }
+            } // End of onDataChange
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
-        }); // End of createUserWithEmailAndPassword
-
-    }
+        }); // End of ListenerForSingleEvent
 
 
-}// end RegistrationActivity
+
+    } // End of handleUserRegistration
+
+
+}// End of RegistrationActivity
