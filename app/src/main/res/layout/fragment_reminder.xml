@@ -22,6 +22,15 @@
 
     ]]>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewReminders"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view3"
         android:layout_width="300dp"
@@ -43,6 +52,7 @@
             android:layout_height="match_parent"
             android:scrollbars="vertical"
             android:textAlignment="center"
+            android:textColor="@android:color/black"
             android:textSize="12dp" />
 
     </androidx.cardview.widget.CardView>
@@ -52,6 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Update Mileage"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,6 +74,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Reminders"
+        android:textColor="#000000"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/card_view1"
         app:layout_constraintEnd_toEndOf="parent"
@@ -90,10 +102,10 @@
             android:id="@+id/textViewRecentMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAlignment="center"
-            android:textSize="12dp"
             android:scrollbars="vertical"
-            />
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="12dp" />
 
     </androidx.cardview.widget.CardView>
 
@@ -118,6 +130,7 @@
             android:isScrollContainer="true"
             android:scrollbars="vertical"
             android:textAlignment="center"
+            android:textColor="@android:color/black"
             android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -129,6 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Current Mileage"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/card_view1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -140,6 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Recent Maintenance"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/card_view2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -151,6 +166,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upcoming Maintenance"
+        android:textColor="@android:color/black"
         app:layout_constraintBottom_toTopOf="@+id/card_view3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

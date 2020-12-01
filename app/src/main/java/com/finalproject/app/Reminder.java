@@ -3,17 +3,26 @@ package com.finalproject.app;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,12 +32,18 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class Reminder extends Fragment {
     //Database References
+    String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
-    DatabaseReference mRef = mDatabase.getReference();
-    DatabaseReference userCarsRef = mRef.child("user-cars");
-    DatabaseReference uid = userCarsRef.child("ZAU5uoNDoaXX9nQHlp44Ddz2ATX2");
-    DatabaseReference secondId = uid.child("-MM1ydgiob5OdsW77k2f");
-    DatabaseReference name = secondId.child("name");
+    DatabaseReference carRef = mDatabase.getReference();
+    DatabaseReference userCarRef = carRef.child("user-cars").child("0f4ag8w46qfwmBUf9FLmu2c4tl53");
+    DatabaseReference specificCarRef = userCarRef.child("-MMUCgPWu4hXNlVfDN7M");
+    DatabaseReference mileageRef = specificCarRef.child("mileage");
+
+    int initialMileage = 0;
+    String mileageRightNow;
+    int mileageRightNowInt;
+
+    //    DatabaseReference mileageRef = uid.child();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,47 +98,75 @@ public class Reminder extends Fragment {
         final TextView recentMaintenance = (TextView)v.findViewById(R.id.textViewRecentMain);
         final TextView upcomingMaintenance = (TextView)v.findViewById(R.id.textViewUpcomingMaintenance);
 
-        // Static Number for mileage for testing purposes
-        final int mileage = 25000;
+        // Allows textviews to be scrollable
+        currentMileage.setMovementMethod(new ScrollingMovementMethod());
+        recentMaintenance.setMovementMethod(new ScrollingMovementMethod());
+        upcomingMaintenance.setMovementMethod((new ScrollingMovementMethod()));
 
-        getCurrentMileage(currentMileage,mileage);
-        recentMaintenance.setText(recentEveryFiveThousand());
-        upcomingMaintenance.setText(everyThirtyThousand(mileage));
 
-        // Controls what happens when you click on the Update Mileage Button
-        btnUpdateMileage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v){
-                //Pops Up a Window that asks to update mileage
-                Intent popUp = new Intent(getContext(),popActivity.class);
-                startActivity(popUp);
 
-                // Gets information from Database
-//                name.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        String data = snapshot.getValue().toString();
-//                        recentMaintenance.setText(data);
-//                    }
+
+        while(true) {
+
+
+            mileageRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    mileageRightNow = snapshot.getValue().toString();
+                    currentMileage.setText("Current mileage is " + mileageRightNow);
+
+                    mileageRightNowInt = currentMileageInteger(mileageRightNow);
+                    maintenanceRoutine(initialMileage,mileageRightNowInt,currentMileage,recentMaintenance,upcomingMaintenance);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+
+                //             Gets information from Database
+
+//        mileageRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                String data = snapshot.getValue().toString();
+//                currentMileage.setText(data);
+//            }
 //
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
 //
-//                    }
-//                });
+//            }
+//        });
 
-            }
-        });
 
-        return v;
-    }
+
+            // Controls what happens when you click on the Update Mileage Button
+            btnUpdateMileage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Pops Up a Window that asks to update mileage
+
+                    Intent popUp = new Intent(getContext(), popActivity.class);
+                    startActivity(popUp);
+
+
+                }
+            });
+
+            return v;
+        }
+
+}
 
     // Methods used to display messages into the TextView objects
     public void getCurrentMileage(TextView currentMileage, int mileage){
-        TextView thisCurrentMileage = currentMileage;
         String theCurrentMileage = Integer.toString(mileage);
-        currentMileage.setText("The current mileage on your vehicle is "
-                + theCurrentMileage + " miles.");
+        currentMileage.setText(String.format("The current mileage on your vehicle is %s miles.",
+                theCurrentMileage));
     }
 
     public void recentMaintenance(TextView recentMain){
@@ -135,40 +178,48 @@ public class Reminder extends Fragment {
     }
 
     // Methods for upcoming maintenance schedule
-    public String everyFiveThousand(){
-        return "• Change Oil and Filter\n" +
-                "• Rotate/Balance Tires\n" +
-                "• Inspect Battery/Clean contacts\n" +
-                "• Inspect Fluids\n" +
-                "• Inspect Hoses\n" +
-                "• Inspect Tire Inflation/Condition";
+    public String everyFiveThousand(int currentMileage){
+        String nextUpcoming = Integer.toString(5000 - (currentMileage % 5000));
+            return "Upcoming in " + nextUpcoming + " miles:\n" +
+                    "• Change Oil and Filter\n" +
+                    "• Rotate/Balance Tires\n" +
+                    "• Inspect Battery/Clean contacts\n" +
+                    "• Inspect Fluids\n" +
+                    "• Inspect Hoses\n" +
+                    "• Inspect Tire Inflation/Condition";
     }
 
-    public String everyFifteenThousand(){
-        return "• Wheel Alignment\n" +
+    public String everyFifteenThousand(int currentMileage){
+        String nextUpcoming = Integer.toString(15000 - (currentMileage % 15000));
+        return "Upcoming in " + nextUpcoming + " miles:\n" +
+                "• Wheel Alignment\n" +
                 "• Replace Wiper Blades\n" +
                 "• Replace Engine Air Filter\n" +
                 "• Inspect Rotors and Pads";
     }
 
-    public String everyThirtyThousand(int mileage){
-        String nextMainMileage = Integer.toString(30000 - mileage);
+    public String everyThirtyThousand(int currentMileage){
+        String nextUpcoming = Integer.toString(30000 - (currentMileage % 30000));
 
-        return "Next maintenance is in " + nextMainMileage + " miles :\n" +
+        return "Upcoming in " + nextUpcoming +  " miles:\n" +
                 "• Replace Battery (if needed)\n" +
                 "• Inspect/Replace Cabin Air Filter\n" +
                 "• Inspect/ Replace Brake Fluid\n" +
                 "• Change Brake Pads/Rotors (if needed)";
     }
 
-    public String everySixtyThousand(){
-        return "• Inspect Timing Belt\n" +
+    public String everySixtyThousand(int currentMileage){
+        String nextUpcoming = Integer.toString(60000 - (currentMileage % 60000));
+        return "Upcoming in " + nextUpcoming + " miles:\n" +
+                "• Inspect Timing Belt\n" +
                 "• Inspect/Replace Serpentine Belts\n" +
                 "• Inspect Transmission Fluid";
     }
 
-    public String everyHundredTwentyThousand(){
-        return "• Change Timing Belt\n" +
+    public String everyHundredTwentyThousand(int currentMileage){
+        String nextUpcoming = Integer.toString(120000 - (currentMileage % 120000));
+        return "Upcoming in " + nextUpcoming + " miles:\n" +
+                "• Change Timing Belt\n" +
                 "• Change Spark Plugs\n" +
                 "• Change Engine Coolant\n" +
                 "• Change Transmission Fluid\n" +
@@ -211,6 +262,62 @@ public class Reminder extends Fragment {
                 "• Changed the Engine Coolant\n" +
                 "• Changed the Transmission Fluid\n" +
                 "• Changed the Power Steering Fluid";
+    }
+
+    public int maintenanceRoutine(int initialMileage, int currentMileage, TextView Mileage,
+                                  TextView recentMaintenance, TextView upcomingMaintenance ) {
+
+
+        if (currentMileage - initialMileage < 5000){
+             upcomingMaintenance.setText(everyFiveThousand(currentMileage));
+        }
+
+        if (currentMileage - initialMileage >= 5000){
+            upcomingMaintenance.setText(String.format("%s\n\n%s", everyFiveThousand(currentMileage),
+                    everyFifteenThousand(currentMileage)));
+            recentMaintenance.setText(recentEveryFiveThousand());
+        }
+
+        if (currentMileage - initialMileage >= 15000){
+            upcomingMaintenance.setText(String.format("%s\n\n%s", everyFiveThousand(currentMileage),
+                    everyThirtyThousand(currentMileage)));
+            recentMaintenance.setText(recentEveryFifteenThousand());
+        }
+
+        if (currentMileage - initialMileage >= 30000){
+            upcomingMaintenance.setText(String.format("%s\n\n%s",
+                    everyFiveThousand(currentMileage),
+                    everySixtyThousand(currentMileage)));
+            recentMaintenance.setText(recentEveryThirtyThousand());
+        }
+
+        if (currentMileage - initialMileage >= 60000){
+            upcomingMaintenance.setText(String.format("%s\n\n%s",
+                    everyFiveThousand(currentMileage),
+                    everyHundredTwentyThousand(currentMileage)));
+            recentMaintenance.setText(recentEverySixtyThousand());
+        }
+
+        if (currentMileage - initialMileage >= 120000){
+            upcomingMaintenance.setText(everyFiveThousand(currentMileage));
+            recentMaintenance.setText(recentEveryHundredTwentyThousand());
+            initialMileage = currentMileage;
+            return initialMileage;
+        }
+
+        return initialMileage;
+    }
+
+    public int currentMileageInteger(String currentMileageString){
+        int currentMileageInteger;
+        if (currentMileageString == null){
+            currentMileageInteger = 15000;
+        }
+        else {
+            currentMileageInteger = Integer.valueOf(currentMileageString);
+            return currentMileageInteger;
+        }
+        return currentMileageInteger;
     }
 
 }
