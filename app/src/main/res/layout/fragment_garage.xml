@@ -130,92 +130,9 @@
         android:text="@string/bodyStyle"
         android:background="#E7E7E7"
         android:textSize="20sp"
-        android:textColor="#000"        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="#000"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/MakeText" />
-
-    <TextView
-        android:id="@+id/TireInformationText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tire Information"
-        android:textColor="#000"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/LicensePlateText"
-        app:layout_constraintVertical_bias="0.105" />
-
-    <TextView
-        android:id="@+id/TireDiameterText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tireDiameter"
-        android:background="#E7E7E7"
-        android:textSize="20sp"
-        android:textColor="#000"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireInformationText" />
-
-    <TextView
-        android:id="@+id/TireServiceTypeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/tireService"
-        android:background="#E7E7E7"
-        android:textSize="20sp"
-        android:textColor="#000"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireInformationText" />
-
-    <TextView
-        android:id="@+id/TireRotationMilesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/tireRotation"
-        android:background="#E7E7E7"
-        android:textSize="20sp"
-        android:textColor="#000"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireDiameterText" />
-
-    <TextView
-        android:id="@+id/OilInformation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Oil Information"
-        android:textColor="#000"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_marginTop="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TireRotationMilesText"
-        app:layout_constraintVertical_bias="0.105" />
-
-    <TextView
-        android:id="@+id/OilGradeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/oilGrade"
-        android:background="#E7E7E7"
-        android:textSize="20sp"
-        android:textColor="#000"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/OilInformation" />
-
-    <TextView
-        android:id="@+id/OilChangeMilesText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/oilChange"
-        android:background="#E7E7E7"
-        android:textSize="20sp"
-        android:textColor="#000"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/OilInformation"
-
-        />
 
     <TextView
         android:id="@+id/InsuranceInformationText"
@@ -227,7 +144,7 @@
         android:textStyle="bold"
         android:layout_marginTop="15dp"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/OilChangeMilesText"
+        app:layout_constraintTop_toBottomOf="@+id/LicensePlateText"
         app:layout_constraintVertical_bias="0.105" />
 
     <TextView
@@ -291,17 +208,5 @@
         app:layout_constraintTop_toBottomOf="@id/RecallsButton"
         app:layout_constraintVertical_bias="0.279"
         />
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/WarrantyButton"
-        app:menu="@menu/bottom_menu" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

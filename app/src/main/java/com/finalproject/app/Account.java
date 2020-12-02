@@ -3,15 +3,31 @@ package com.finalproject.app;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+
+import com.finalproject.app.db.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.EventListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +44,18 @@ public class Account extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    // Dialog builder for popup
+    private AlertDialog.Builder dialogBuilder;
+    private AlertDialog dialog;
+
+    // Text view for Account information
+    private TextView userName, userEmail, userFullName;
+    // Buttons for Account page
+    private Button aboutButton;
+
+    // Database Reference
+    DatabaseReference userRef;
 
     public Account() {
         // Required empty public constructor
@@ -65,8 +93,64 @@ public class Account extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+        // Sets up database reference for user info
+
+        final String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uID);
+
+        userName = (TextView) view.findViewById(R.id.UserNameText);
+        userEmail = (TextView) view.findViewById(R.id.UserEmailText);
+        userFullName = (TextView) view.findViewById(R.id.FullNameText);
+
+        //Buttons
+        aboutButton = (Button) view.findViewById(R.id.AboutButton);
+        aboutButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                AboutPage();
+            }
+        });
+        // Strings for database registration
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+               String uName = snapshot.child("userName").getValue(String.class);
+               userName.setText(uName);
+               String uEmail = snapshot.child("userEmail").getValue(String.class);
+               userEmail.setText(uEmail);
+               String uFullName = snapshot.child("fullName").getValue(String.class);
+               userFullName.setText(uFullName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         return view;
+    }
+
+    public void AboutPage() {
+        Button CloseAboutPage;
+        dialogBuilder = new AlertDialog.Builder(getActivity());
+        final View aboutPopup = getLayoutInflater().inflate(R.layout.about_popup, null);
+
+        // Creates buttons on form
+        CloseAboutPage = (Button) aboutPopup.findViewById(R.id.CloseButton_About);
+
+        dialogBuilder.setView(aboutPopup);
+        dialog = dialogBuilder.create();
+        dialog.show();
+
+        // Closes popup when user clicks close button
+        CloseAboutPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //define cancel button here!!
+                dialog.dismiss();
+            }
+        });
     }
 
 };
