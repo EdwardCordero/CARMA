@@ -24,12 +24,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -103,7 +105,6 @@ public class Reminder extends Fragment {
         final TextView currentMileage = (TextView)v.findViewById(R.id.textViewCurrentMileage);
         final TextView recentMaintenance = (TextView)v.findViewById(R.id.textViewRecentMain);
         final TextView upcomingMaintenance = (TextView)v.findViewById(R.id.textViewUpcomingMaintenance);
-        final TextView getTheCurrentMileage = (TextView)v.findViewById(R.id.MileageText);
 
         // Allows textviews to be scrollable
         currentMileage.setMovementMethod(new ScrollingMovementMethod());
@@ -129,6 +130,8 @@ public class Reminder extends Fragment {
                              data = snapshot.getValue().toString();
                              int dataInt = Integer.parseInt(data);
                              getCurrentMileage(currentMileage,dataInt);
+                             recentMaintenance.setText(oilHealth(data) + "\n" + tireHealth(data) + "\n" +
+                                     batteryHealth(data) + "\n" + brakeHealth(data));
                              maintenanceRoutine(initialMileage,dataInt,recentMaintenance,upcomingMaintenance);
 
                          }
@@ -173,13 +176,6 @@ public class Reminder extends Fragment {
                 theCurrentMileage));
     }
 
-    public void recentMaintenance(TextView recentMain){
-        recentMain.setText("");
-    }
-
-    public void getUpcomingMaintenance(TextView upcomingMain){
-        upcomingMain.setText("");
-    }
 
     // Methods for upcoming maintenance schedule
     public String everyFiveThousand(int currentMileage){
@@ -230,43 +226,7 @@ public class Reminder extends Fragment {
                 "• Change Power Steering Fluid";
     }
 
-    // Methods for recent maintenance schedule
-    public String recentEveryFiveThousand(){
-        return "• Changed Oil and Filter\n" +
-                "• Rotated/Balanced Tires\n" +
-                "• Inspected Battery/Clean contacts\n" +
-                "• Inspected Fluids\n" +
-                "• Inspected Hoses\n" +
-                "• Inspected Tire Inflation/Condition";
-    }
 
-    public String recentEveryFifteenThousand(){
-        return "• Aligned Wheels\n" +
-                "• Replaced Wiper Blades\n" +
-                "• Replaced Engine Air Filter\n" +
-                "• Inspected Rotors and Pads";
-    }
-
-    public String recentEveryThirtyThousand(){
-        return "• Replaced Battery (if needed)\n" +
-                "• Inspected/Replaced Cabin Air Filter\n" +
-                "• Inspected/ Replaced Brake Fluid\n" +
-                "• Changed Brake Pads/Rotors (if needed)";
-    }
-
-    public String recentEverySixtyThousand(){
-        return "• Inspected Timing Belt\n" +
-                "• Inspected/Replaced Serpentine Belts\n" +
-                "• Inspected Transmission Fluid";
-    }
-
-    public String recentEveryHundredTwentyThousand(){
-        return "• Changed the Timing Belt\n" +
-                "• Changed the Spark Plugs\n" +
-                "• Changed the Engine Coolant\n" +
-                "• Changed the Transmission Fluid\n" +
-                "• Changed the Power Steering Fluid";
-    }
 
     public int maintenanceRoutine(int initialMileage, int currentMileage,
                                   TextView recentMaintenance, TextView upcomingMaintenance ) {
@@ -279,32 +239,27 @@ public class Reminder extends Fragment {
         if (currentMileage - initialMileage >= 5000){
             upcomingMaintenance.setText(String.format("%s\n\n%s", everyFiveThousand(currentMileage),
                     everyFifteenThousand(currentMileage)));
-            recentMaintenance.setText(recentEveryFiveThousand());
         }
 
         if (currentMileage - initialMileage >= 15000){
             upcomingMaintenance.setText(String.format("%s\n\n%s", everyFiveThousand(currentMileage),
                     everyThirtyThousand(currentMileage)));
-            recentMaintenance.setText(recentEveryFifteenThousand());
         }
 
         if (currentMileage - initialMileage >= 30000){
             upcomingMaintenance.setText(String.format("%s\n\n%s",
                     everyFiveThousand(currentMileage),
                     everySixtyThousand(currentMileage)));
-            recentMaintenance.setText(recentEveryThirtyThousand());
         }
 
         if (currentMileage - initialMileage >= 60000){
             upcomingMaintenance.setText(String.format("%s\n\n%s",
                     everyFiveThousand(currentMileage),
                     everyHundredTwentyThousand(currentMileage)));
-            recentMaintenance.setText(recentEverySixtyThousand());
         }
 
         if (currentMileage - initialMileage >= 120000){
             upcomingMaintenance.setText(everyFiveThousand(currentMileage));
-            recentMaintenance.setText(recentEveryHundredTwentyThousand());
             initialMileage = currentMileage;
             return initialMileage;
         }
@@ -312,16 +267,45 @@ public class Reminder extends Fragment {
         return initialMileage;
     }
 
-    public int currentMileageInteger(String currentMileageString){
-        int currentMileageInteger;
-        if (currentMileageString == null){
-            currentMileageInteger = 15000;
-        }
-        else {
-            currentMileageInteger = Integer.valueOf(currentMileageString);
-            return currentMileageInteger;
-        }
-        return currentMileageInteger;
+    public String oilHealth (String currentMileage){
+        double milesUntilChange = 5000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) /100;
+        NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
+        String percentage = format.format(percent);
+
+        return "Oil Health: " + percentage;
+    }
+
+    public String tireHealth (String currentMileage){
+        double milesUntilChange = 60000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) / 100;
+        NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
+        String percentage = format.format(percent);
+
+        return "Tire Health: " + percentage;
+    }
+
+    public String batteryHealth (String currentMileage){
+        double milesUntilChange = 50000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) / 100;
+        NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
+        String percentage = format.format(percent);
+
+        return "Battery Health: " + percentage;
+    }
+
+
+    public String brakeHealth (String currentMileage) {
+        double milesUntilChange = 50000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) / 100;
+        NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
+        String percentage = format.format(percent);
+
+        return "Brake Health: " + percentage;
     }
 
 }
