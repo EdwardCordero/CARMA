@@ -13,22 +13,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.finalproject.app.auth.AuthUiActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,33 +36,54 @@ import java.util.List;
 public class CarInformation extends Fragment {
 
     ////////////////////////////////
-    ///// Global Variables ////////
+    //added by Warren
     private PopupWindow popupwindow;
     private LayoutInflater layoutInflater;
     private ConstraintLayout constraintLayout;
-    DatabaseReference reference;
-    final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-    final int pop_width = 800;
-    final int pop_height = 1000;
-    String selectedCar = "-MMNFXzSZ3NGJ6lHxpWu";
-    ////////////////////////////////
-
-
     ///////////////////////////////////////
+
+    //////////////////////////////////////
+    // Database
+    String user = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    DatabaseReference carRef = mDatabase.getReference();
+    DatabaseReference userCarRef = carRef.child("user-cars").child(user);
+    DatabaseReference specificCarRef;
+    DatabaseReference mileageRef;
+    String currentMiles;
+    DatabaseReference currentCar;
+
+    /////
+    /////////////////////////////////////////////
+
+
+
+
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     public CarInformation() {
 
+
         // Required empty public constructor
     }
 
-
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment CarInformation.
+     */
     // TODO: Rename and change types and number of parameters
     public static CarInformation newInstance(String param1, String param2) {
         CarInformation fragment = new CarInformation();
@@ -88,53 +107,43 @@ public class CarInformation extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car_information, container, false);
-        constraintLayout = view.findViewById(R.id.CarInformationLayout);
-
-        // connection to database
-        reference = FirebaseDatabase.getInstance().getReference("user-cars");
 
 
-        ///// this function works just need the other part
-        // final DatabaseReference secondRef = reference.getRef().child(currentUser.getUid());
-        ////// this function will be replaced once we get the car selection to work
-        final DatabaseReference secondRef = reference.getRef().child("ZAU5uoNDoaXX9nQHlp44Ddz2ATX2");
 
-
-        /////// declaring the buttons and textviews/////////
-        Button btnBrakes = view.findViewById(R.id.btnBrakes);
-        Button btnFluids = view.findViewById(R.id.btnFluids);
-        Button btnTires = view.findViewById(R.id.btnTires);
-        Button btnRecalls = view.findViewById(R.id.btnRecalls);
-        Button btnAirFilter = view.findViewById(R.id.btnAirFilter);
+        final Button btnBrakes = view.findViewById(R.id.btnBrakes);
+        final Button btnFluids = view.findViewById(R.id.btnFluids);
+        final Button btnTires = view.findViewById(R.id.btnTires);
+        final Button btnBattery = view.findViewById(R.id.btnBattery);
         final TextView currentMileage = view.findViewById(R.id.currentMileage);
 
-        ////////////////////////////////////////////////////
 
 
 
-
-        // current user information to display top right corner
-        final TextView userinfo = view.findViewById(R.id.usertextview);
-
-        //////////////////////////////////////////////////////////
-
-
-
-        secondRef.addValueEventListener(new ValueEventListener() {
+        userCarRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot ds : snapshot.getChildren()){
+                    String uid = ds.getKey();
+                    specificCarRef = userCarRef.child(uid);
+                    mileageRef = specificCarRef.child("mileage");
 
-                // static variable for testing
+                    mileageRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            currentMiles = snapshot.getValue().toString();
+                            int dataInt = Integer.parseInt(currentMiles);
+                            currentMileage.setText(currentMiles + "miles");
+                            currentCar = mileageRef;
 
+                        }
 
-                String mileage = snapshot.child(selectedCar).child("mileage").getValue(String.class);
-                currentMileage.setText(mileage + " miles");
-                String topRight1 = snapshot.child(selectedCar).child("make").getValue(String.class);
-                String topRight2 = snapshot.child(selectedCar).child("model").getValue(String.class);
-                String topRight3 = snapshot.child(selectedCar).child("licensePlate").getValue(String.class);
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
+                        }
+                    });
 
-                userinfo.setText(topRight1 + "  " + topRight2 + "\n" + topRight3);
+                }
             }
 
             @Override
@@ -144,14 +153,25 @@ public class CarInformation extends Fragment {
         });
 
 
+        // declaring the buttons here.
 
 
 
-// the beginning of the button methods
 
+
+
+
+        constraintLayout = view.findViewById(R.id.CarInformationLayout);
+
+        // this is the height for the popup window. just place holders for now
+        final int pop_width = 600;
+        final int pop_height = 600;
+
+// the beginning of the button methods. im sure there is a neater way to do all of this
         btnBrakes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
 
                 layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 ViewGroup container = (ViewGroup) layoutInflater.inflate(R.layout.pop_up, null);
@@ -160,35 +180,18 @@ public class CarInformation extends Fragment {
                 popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
 
 
+
+
                 //
                 //Setting information
-
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
-                final TextView infoDetails = (TextView) container.findViewById(R.id.infoDetails);
-                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
+                String healthPercent = String.valueOf(brakeHealth(currentMiles));
+                infoTitle.setText(healthPercent + "%");
 
-                /* ready for when we get information on breaks in the database
-               secondRef.addValueEventListener(new ValueEventListener() {
-                  @Override
-                  public void onDataChange(@NonNull DataSnapshot snapshot) {
-                      String brakeDetails = snapshot.child("oilChange").getValue(String.class);
-                      String brakeDetails2 = snapshot.child("oilGrade").getValue(String.class);
+                ProgressBar healthBar = container.findViewById(R.id.progress_bar);
+                healthBar.setMax(100);
+                healthBar.setProgress(brakeHealth(currentMiles));
 
-                      infoDetails.setText(brakeDetails + "\n" + brakeDetails2);
-
-
-                  }
-
-                  @Override
-                  public void onCancelled(@NonNull DatabaseError error) {
-
-                  }
-              });*/
-
-                // static information for now
-                infoTitle.setText("Brakes");
-                infoDetails.setText("Current car's brakes");
-                infoDate.setText("August 04, 2019");
 
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -215,28 +218,13 @@ public class CarInformation extends Fragment {
                 //
                 // setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
-                final TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
-                final TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
-                infoTitle.setText("Engine Oil");
+                String healthPercent = String.valueOf(oilHealth(currentMiles));
+                infoTitle.setText(healthPercent + "%");
 
+                ProgressBar healthBar = container.findViewById(R.id.progress_bar);
+                healthBar.setMax(100);
+                healthBar.setProgress(oilHealth(currentMiles));
 
-                secondRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String oildetails = snapshot.child(selectedCar).child("oilChange").getValue(String.class);
-                        String oildetails2 = snapshot.child(selectedCar).child("oilGrade").getValue(String.class);
-                        infoDetails.setText("Oil Change: " + oildetails + "\n" + "Oil Grade: " + oildetails2 );
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-                infoDate.setText("March 19, 2019");
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
                     public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -263,31 +251,13 @@ public class CarInformation extends Fragment {
                 //
                 // setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
-                final TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
-                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
-                infoTitle.setText("Tires");
 
-                secondRef.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String tireDetails1 = snapshot.child(selectedCar).child("tireDiameter").getValue(String.class);
-                        String tireDetails2 = snapshot.child(selectedCar).child("tireRotation").getValue(String.class);
-                        String tireDetails3 = snapshot.child(selectedCar).child("tireService").getValue(String.class);
-                        infoDetails.setText("tire Diameter: " + tireDetails1 + "\n" + "tire Rotation: " + tireDetails2 +"\n"
-                                + "Tire Service: "+ tireDetails3);
+                String healthPercent = String.valueOf(tireHealth(currentMiles));
+                infoTitle.setText(healthPercent + "%");
 
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-                infoDetails.setText("Michelin Defender T+H ");
-                infoDate.setText("January 17, 2019");
+                ProgressBar healthBar = container.findViewById(R.id.progress_bar);
+                healthBar.setMax(100);
+                healthBar.setProgress(tireHealth(currentMiles));
 
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -301,7 +271,7 @@ public class CarInformation extends Fragment {
         });
 
 
-        btnRecalls.setOnClickListener(new View.OnClickListener() {
+        btnBattery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -315,11 +285,13 @@ public class CarInformation extends Fragment {
                 //
                 // setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
-                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
-                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
-                infoTitle.setText("Recalls");
-                infoDetails.setText(" ");
-                infoDate.setText(" ");
+
+                String healthPercent = String.valueOf(batteryHealth(currentMiles));
+                infoTitle.setText(healthPercent + "%");
+
+                ProgressBar healthBar = container.findViewById(R.id.progress_bar);
+                healthBar.setMax(100);
+                healthBar.setProgress(batteryHealth(currentMiles));
 
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -328,43 +300,51 @@ public class CarInformation extends Fragment {
                         return true;
                     }
                 });
-                Toast.makeText(getContext(),"Recalls", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(),"Battery", Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        btnAirFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                layoutInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                ViewGroup container = (ViewGroup) layoutInflater.inflate(R.layout.pop_up, null);
-
-                popupwindow = new PopupWindow(container, pop_width, pop_height, true);
-                popupwindow.showAtLocation(constraintLayout, Gravity.CENTER, 0, 0);
-
-                TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
-                TextView infoDetails = (TextView)container.findViewById(R.id.infoDetails);
-                TextView infoDate = (TextView)container.findViewById(R.id.infoDate);
-                infoTitle.setText("Air filter");
-                infoDetails.setText("STP Air Filter SA9711 ");
-                infoDate.setText("December 05, 2019");
-
-
-                container.setOnTouchListener(new View.OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View view, MotionEvent motionEvent) {
-                        popupwindow.dismiss();
-
-                        return true;
-                    }
-                });
-                Toast.makeText(getContext(),"Air Filter", Toast.LENGTH_SHORT).show();
-            }
-        });
 
 
 
         return view;
     }
+
+
+    public int oilHealth (String currentMileage){
+        double milesUntilChange = 5000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+
+
+        return (int) percent;
+    }
+    public int tireHealth(String currentMileage){
+        double milesUntilChange = 60000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+
+
+        return (int) percent;
+    }
+
+    public int batteryHealth (String currentMileage){
+        double milesUntilChange = 50000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+
+        return (int) percent;
+    }
+
+
+    public int brakeHealth (String currentMileage) {
+        double milesUntilChange = 50000;
+        double currentMileageInt = Integer.parseInt(currentMileage);
+        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+
+        return (int) percent ;
+    }
+
 }

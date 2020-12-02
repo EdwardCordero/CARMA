@@ -7,26 +7,27 @@
     android:layout_height="match_parent"
     tools:context=".CarInformation">
 
+    <!-- TODO: Update blank fragment layout -->
 
     <Button
         android:id="@+id/btnTires"
-        android:layout_width="97dp"
+        android:layout_width="112dp"
         android:layout_height="47dp"
-        android:background="#9582C7E6"
-        android:text="Tires"
+        android:background="#9503A9F4"
+        android:text="Tire Rotation"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.891"
+        app:layout_constraintHorizontal_bias="0.944"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.672" />
+        app:layout_constraintVertical_bias="0.673" />
 
     <Button
         android:id="@+id/btnFluids"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:background="#9582C7E6"
+        android:background="#9503A9F4"
         android:text="Engine Oil"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnTires"
@@ -36,35 +37,24 @@
         app:layout_constraintVertical_bias="0.673" />
 
     <Button
-        android:id="@+id/btnRecalls"
+        android:id="@+id/btnBattery"
         android:layout_width="102dp"
         android:layout_height="48dp"
         android:layout_marginEnd="76dp"
-        android:background="#9582C7E6"
-        android:text="Recalls"
+        android:background="#9503A9F4"
+        android:text="Battery"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTires"
         app:layout_constraintVertical_bias="0.291" />
 
-    <Button
-        android:id="@+id/btnAirFilter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#9582C7E6"
-        android:text="Air Filter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnRecalls"
-        app:layout_constraintHorizontal_bias="0.592"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnBrakes"
-        app:layout_constraintVertical_bias="0.291" />
+
 
     <Button
         android:id="@+id/btnBrakes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#9582C7E6"
+        android:background="#9503A9F4"
         android:text="Brakes"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,32 +82,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.331" />
 
-        android:layout_width="145dp"
-        android:layout_height="46dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="237dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="417dp"
-        android:text="Car Information"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/usertextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="user information"
-        android:textAlignment="textEnd"
-        android:textColor="@android:color/black"
-        android:background="#9582C7E6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.948"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.022" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
