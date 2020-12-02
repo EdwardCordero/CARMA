@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,9 +48,19 @@ public class Reminder extends Fragment {
     DatabaseReference userCarRef = carRef.child("user-cars").child(user);
     DatabaseReference specificCarRef;
     DatabaseReference mileageRef;
+    DatabaseReference tireRotationRef;
+    DatabaseReference oilChangeRef;
+    DatabaseReference makeRef;
+    DatabaseReference modelRef;
+    DatabaseReference yearRef;
 
     int initialMileage = 0;
-    String data;
+    String mileageData;
+    String tireRotationData;
+    String oilChangeData;
+    String yearData;
+    String makeData;
+    String modelData;
 
     //    DatabaseReference mileageRef = uid.child();
 
@@ -123,15 +134,81 @@ public class Reminder extends Fragment {
                      String uid = ds.getKey();
                      specificCarRef = userCarRef.child(uid);
                      mileageRef = specificCarRef.child("mileage");
+                     tireRotationRef = specificCarRef.child("tireRotation");
+                     oilChangeRef = specificCarRef.child("tireDiameter");
+                     yearRef = specificCarRef.child(("year"));
+                     makeRef = specificCarRef.child("make");
+                     modelRef = specificCarRef.child("model");
+
+                     yearRef.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                             yearData = snapshot.getValue().toString();
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+
+                     makeRef.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                             makeData = snapshot.getValue().toString();
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+
+                     modelRef.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                             modelData = snapshot.getValue().toString();
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+
+                     tireRotationRef.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                             tireRotationData = snapshot.getValue().toString();
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+
+                     oilChangeRef.addValueEventListener(new ValueEventListener() {
+                         @Override
+                         public void onDataChange(@NonNull DataSnapshot snapshot) {
+                             oilChangeData = snapshot.getValue().toString();
+                         }
+
+                         @Override
+                         public void onCancelled(@NonNull DatabaseError error) {
+
+                         }
+                     });
+
 
                      mileageRef.addValueEventListener(new ValueEventListener() {
                          @Override
                          public void onDataChange(@NonNull DataSnapshot snapshot) {
-                             data = snapshot.getValue().toString();
-                             int dataInt = Integer.parseInt(data);
-                             getCurrentMileage(currentMileage,dataInt);
-                             recentMaintenance.setText(oilHealth(data) + "\n" + tireHealth(data) + "\n" +
-                                     batteryHealth(data) + "\n" + brakeHealth(data));
+                             mileageData = snapshot.getValue().toString();
+                             int dataInt = Integer.parseInt(mileageData);
+                             getCurrentMileage(currentMileage,dataInt, yearData, makeData, modelData);
+                             recentMaintenance.setText(oilHealth(mileageData,oilChangeData) + "\n" + tireHealth(mileageData,tireRotationData) + "\n" +
+                                     batteryHealth(mileageData) + "\n" + brakeHealth(mileageData));
                              maintenanceRoutine(initialMileage,dataInt,recentMaintenance,upcomingMaintenance);
 
                          }
@@ -170,10 +247,10 @@ public class Reminder extends Fragment {
 }
 
     // Methods used to display messages into the TextView objects
-    public void getCurrentMileage(TextView currentMileage, int mileage){
+    public void getCurrentMileage(TextView currentMileage, int mileage, String year, String make, String model){
         String theCurrentMileage = Integer.toString(mileage);
-        currentMileage.setText(String.format("The current mileage on your vehicle is %s miles.",
-                theCurrentMileage));
+        currentMileage.setText(String.format("Your %s %s %s currently has %s miles.",
+                year, make, model, theCurrentMileage));
     }
 
 
@@ -181,8 +258,6 @@ public class Reminder extends Fragment {
     public String everyFiveThousand(int currentMileage){
         String nextUpcoming = Integer.toString(5000 - (currentMileage % 5000));
             return "Upcoming in " + nextUpcoming + " miles:\n" +
-                    "• Change Oil and Filter\n" +
-                    "• Rotate/Balance Tires\n" +
                     "• Inspect Battery/Clean contacts\n" +
                     "• Inspect Fluids\n" +
                     "• Inspect Hoses\n" +
@@ -231,7 +306,6 @@ public class Reminder extends Fragment {
     public int maintenanceRoutine(int initialMileage, int currentMileage,
                                   TextView recentMaintenance, TextView upcomingMaintenance ) {
 
-
         if (currentMileage - initialMileage < 5000){
              upcomingMaintenance.setText(everyFiveThousand(currentMileage));
         }
@@ -267,45 +341,85 @@ public class Reminder extends Fragment {
         return initialMileage;
     }
 
-    public String oilHealth (String currentMileage){
-        double milesUntilChange = 5000;
+    public String oilHealth (String currentMileage, String oilChange){
+        String output;
+        double milesUntilChange = Double.parseDouble(oilChange);
         double currentMileageInt = Integer.parseInt(currentMileage);
         double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) /100;
         NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
         String percentage = format.format(percent);
 
-        return "Oil Health: " + percentage;
+        if (percent <= .10)
+        {
+            output = "Oil Health: " + percentage + " - Please Service Soon";
+        }
+        else
+        {
+            output = "Oil Health: " + percentage;
+        }
+
+        return output;
     }
 
-    public String tireHealth (String currentMileage){
-        double milesUntilChange = 60000;
+    public String tireHealth (String currentMileage, String tireRotation){
+        String output;
+        int milesUntilChange = Integer.parseInt(tireRotation);
         double currentMileageInt = Integer.parseInt(currentMileage);
         double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) / 100;
         NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
         String percentage = format.format(percent);
 
-        return "Tire Health: " + percentage;
+        if (percent <= .10)
+        {
+            output = "Tire Health: " + percentage + " - Please Service Soon";
+        }
+        else
+        {
+            output = "Tire Health: " + percentage;
+        }
+
+        return output;
     }
 
     public String batteryHealth (String currentMileage){
+        String output;
         double milesUntilChange = 50000;
         double currentMileageInt = Integer.parseInt(currentMileage);
         double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) / 100;
         NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
         String percentage = format.format(percent);
 
-        return "Battery Health: " + percentage;
+        if (percent <= .10)
+        {
+            output = "Battery Health: " + percentage + " - Please Service Soon";
+        }
+        else
+        {
+            output = "Battery Health: " + percentage;
+        }
+
+        return output;
     }
 
 
     public String brakeHealth (String currentMileage) {
+        String output;
         double milesUntilChange = 50000;
         double currentMileageInt = Integer.parseInt(currentMileage);
         double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) / 100;
         NumberFormat format = NumberFormat.getPercentInstance(Locale.US);
         String percentage = format.format(percent);
 
-        return "Brake Health: " + percentage;
+        if (percent <= .10)
+        {
+            output = "Brake Health: " + percentage + " - Please Service Soon";
+        }
+        else
+        {
+            output = "Brake Health: " + percentage;
+        }
+
+        return output;
     }
 
 }
