@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#D0B6ECDE"
+    android:background="@drawable/background"
     android:orientation="vertical"
+
     android:padding="10dp">
 
 
@@ -13,7 +14,7 @@
         android:id="@+id/infoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Part Title "
+        android:text="Health "
         android:textColor="#5228A1"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -21,6 +22,20 @@
         app:layout_constraintEnd_toEndOf="@+id/progress_bar"
         app:layout_constraintStart_toStartOf="@+id/progress_bar"
         app:layout_constraintTop_toTopOf="@+id/progress_bar" />
+
+    <TextView
+        android:id="@+id/health"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Health "
+        android:textColor="#5228A1"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
