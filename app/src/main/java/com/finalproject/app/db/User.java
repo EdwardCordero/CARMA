@@ -34,24 +34,19 @@ public class User {
     public String getUserName(){
         return Username;
     }
-    public void SetName(String Username){
-        this.Username = Username;
-    }
 
     public String getUserEmail(){
         return Email;
     }
-    public void SetUserEmail(String Email){
-        this.Email = Email;
-    }
+
 
     public String getUserFstName() { return FirstName; }
-    public void SetUserFstName(String FirstName){
-        this.FirstName = FirstName;
-    }
+
     public String getUserLstName() { return LastName; }
-    public void SetUserLstName(String LastName){
-        this.LastName = LastName;
-    }
+
     public String getFullName() { return FirstName + " " + LastName; }
+
+
+
+
 }

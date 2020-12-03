@@ -1,6 +1,5 @@
 package com.finalproject.app.auth;
 
-import com.finalproject.app.CarRegistration;
 import com.finalproject.app.db.User;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -31,8 +30,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class RegistrationActivity extends AppCompatActivity {
     /***********************************
@@ -93,10 +90,8 @@ public class RegistrationActivity extends AppCompatActivity {
     // writeNewUser()
     // writes new user data to DB
     private void writeNewUser(String userID, String FirstName, String LastName, String UserName, String Email){
-        final ArrayList<User> users = new ArrayList<>();
         User user = new User(FirstName, LastName, UserName, Email);
-        users.add(user);
-        rootRef.child("Users").child(userID).setValue(user);
+        rootRef.child(userID).setValue(user);
     }
 
 
