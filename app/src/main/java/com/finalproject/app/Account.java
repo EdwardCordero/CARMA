@@ -1,5 +1,6 @@
 package com.finalproject.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,12 +9,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -29,12 +32,23 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.EventListener;
 
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Account#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class Account extends Fragment {
+
+    /***********************************
+     * ACCOUNT FRAGMENT VARIABLES
+     *************************************/
+    // Buttons
+    private Button btnChangePasswd;
+
+    // Firebase Auth instance
+    private FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -86,6 +100,8 @@ public class Account extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -93,6 +109,7 @@ public class Account extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+
         // Sets up database reference for user info
 
         final String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -128,6 +145,10 @@ public class Account extends Fragment {
             }
         });
 
+
+                passwordResetDialog.create().show();
+            }
+        }); // End reset password ClickListener
         return view;
     }
 
