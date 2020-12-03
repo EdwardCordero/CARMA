@@ -66,24 +66,23 @@ public class Garage extends Fragment {
     private AlertDialog.Builder dialogBuilder;
     private AlertDialog dialog;
 
+    // Variables for Text in vehicle registration popup page
     private EditText vr_Make, vr_Model, vr_Year, vr_BodyStyle, vr_Mileage, vr_LicensePlate,
             vr_OilGrade, vr_OilChangeMiles,
             vr_TireRotationMiles, vr_TireServiceType, vr_TireDiameter,
             vr_InsurancePolicyNum, vr_RegistrationExperation;
-
+    // Buttons
     private Button vr_Cancel, vr_Save, vr_AddVehicle, recallButton, warrantyButton, CloseRecallButton, CloseWarrantyButton;
 
     //Variables for garage text view
-
     private TextView make, model, year, bodystyle, mileage, licensePlate, oilGrade, oilChange, tireRotation, tireService,
                      tireDiameter, insuranceNum, registrationExp;
-
     // Variables for Spinner name function
     private EditText sp_Name;
-
+    // Buttons in spinner
     private Button sp_Save, sp_Cancel;
 
-    // Database Variables
+    // Database Reference
     DatabaseReference carRef;
 
 
@@ -135,11 +134,6 @@ public class Garage extends Fragment {
         bodystyle = (TextView) view.findViewById(R.id.BodyStyleText);
         mileage = (TextView) view.findViewById(R.id.MileageText);
         licensePlate = (TextView) view.findViewById(R.id.LicensePlateText);
-        tireDiameter = (TextView) view.findViewById(R.id.TireDiameterText);
-        tireService = (TextView) view.findViewById(R.id.TireServiceTypeText);
-        tireRotation = (TextView) view.findViewById(R.id.TireRotationMilesText);
-        oilGrade = (TextView) view.findViewById(R.id.OilGradeText);
-        oilChange = (TextView) view.findViewById(R.id.OilChangeMilesText);
         insuranceNum = (TextView) view.findViewById(R.id.InsurancePolicyNumText);
         registrationExp = (TextView) view.findViewById(R.id.RegistrationExperationText);
 
@@ -167,16 +161,16 @@ public class Garage extends Fragment {
                 WarrantyButtonListener();
             }
         });
-// Strings for database registration
+    // Strings for database registration
         final String uID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Spinner spinnerCar = (Spinner) view.findViewById(R.id.CarList);
         final DatabaseReference userCarRef = carRef.child("user-cars").child(uID);
-        final ArrayList<CarRegistration> cars = new ArrayList<CarRegistration>();
+        final ArrayList<CarRegistration> cars = new ArrayList<>();
 
         userCarRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                final List<String> carCollectionList = new ArrayList<String>();
+                final List<String> carCollectionList = new ArrayList<>();
 
                 for (DataSnapshot carSnapshot: snapshot.getChildren()) {
                     CarRegistration carInfo = carSnapshot.getValue(CarRegistration.class);
@@ -205,16 +199,6 @@ public class Garage extends Fragment {
                         mileage.setText(mileageDB);
                         String licenseplateDB = cars.get(position).getLicensePlate();
                         licensePlate.setText(licenseplateDB);
-                        String tirediameterDB = cars.get(position).getTireDiameter();
-                        tireDiameter.setText(tirediameterDB);
-                        String tireserviceDB = cars.get(position).getTireService();
-                        tireService.setText(tireserviceDB);
-                        String tirerotationDB = cars.get(position).getTireRotation();
-                        tireRotation.setText(tirerotationDB);
-                        String oilgradeDB = cars.get(position).getOilGrade();
-                        oilGrade.setText(oilgradeDB);
-                        String oilchangeDB = cars.get(position).getOilChange();
-                        oilChange.setText(oilchangeDB);
                         String insurancenumDB = cars.get(position).getInsuranceNum();
                         insuranceNum.setText(insurancenumDB);
                         String registrationexpDB = cars.get(position).getRegistrationExp();
@@ -350,11 +334,10 @@ public class Garage extends Fragment {
         final String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final String key = carRef.child("Cars").push().getKey();
 
-        //Still need to make save function
+        // save function
         vr_Save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //define save button here!!
                 CarRegistration carRegistration = new CarRegistration(sp_Name.getText().toString(),vr_Make.getText().toString(), vr_Model.getText().toString(), vr_Year.getText().toString(),
                         vr_BodyStyle.getText().toString(), vr_Mileage.getText().toString(), vr_LicensePlate.getText().toString(), vr_OilChangeMiles.getText().toString(),
                         vr_OilGrade.getText().toString(), vr_TireRotationMiles.getText().toString(), vr_TireServiceType.getText().toString(), vr_TireDiameter.getText().toString(),
