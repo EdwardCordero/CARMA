@@ -3,92 +3,106 @@
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CarInformationLayout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".CarInformation">
 
-    android:layout_width="match_parent"
-    android:background="@drawable/background"
-    android:layout_height="match_parent"
-    tools:context=".CarInformation">
-
-    <!-- TODO: Update blank fragment layout -->
-
-
-    <!-- this text view is to display the current mileage.   -->
-
+<!-- TODO: Update blank fragment layout -->
 
     <Button
         android:id="@+id/btnTires"
         android:layout_width="112dp"
         android:layout_height="47dp"
-        android:background="@drawable/button_carinfo"
+        android:background="#9503A9F4"
         android:text="Tire Rotation"
-        android:textColor="@color/text_carinfo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.819"
+        app:layout_constraintHorizontal_bias="0.944"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.729" />
+        app:layout_constraintVertical_bias="0.673" />
 
     <Button
         android:id="@+id/btnFluids"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_carinfo"
+        android:layout_marginStart="12dp"
+        android:background="#9503A9F4"
         android:text="Engine Oil"
-        android:textColor="@color/text_carinfo"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.123"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnTires"
+        app:layout_constraintHorizontal_bias="0.431"
+        app:layout_constraintStart_toEndOf="@+id/btnBrakes"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.73" />
+        app:layout_constraintVertical_bias="0.673" />
 
     <Button
-        android:id="@+id/btnBattery"
+        android:id="@+id/btnBelts"
         android:layout_width="102dp"
         android:layout_height="48dp"
-        android:background="@drawable/button_carinfo"
-        android:text="Battery"
-        android:textColor="@color/text_carinfo"
+        android:layout_marginEnd="76dp"
+        android:background="#9503A9F4"
+        android:text="Timing Belts"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.825"
+        app:layout_constraintTop_toBottomOf="@+id/btnTires"
+        app:layout_constraintVertical_bias="0.291" />
+
+    <Button
+        android:id="@+id/btnAirFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#9503A9F4"
+        android:text="Air Filter"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnBelts"
+        app:layout_constraintHorizontal_bias="0.592"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.866" />
+        app:layout_constraintTop_toBottomOf="@+id/btnBrakes"
+        app:layout_constraintVertical_bias="0.291" />
 
     <Button
         android:id="@+id/btnBrakes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_carinfo"
+        android:background="#9503A9F4"
         android:text="Brakes"
-        android:textColor="@color/text_carinfo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.123"
+        app:layout_constraintHorizontal_bias="0.089"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.866" />
+        app:layout_constraintVertical_bias="0.673" />
 
+
+    <!-- this text view is to display the current mileage.   -->
     <TextView
 
         android:id="@+id/currentMileage"
         android:layout_width="222dp"
         android:layout_height="74dp"
-        android:background="@drawable/button_carinfo"
+        android:background="#9503A9F4"
         android:gravity="center"
-        android:hint="Current Mileage"
         android:inputType="number|text"
         android:text="500143 miles"
         android:textAlignment="center"
-        android:textColor="@color/text_carinfo"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.202" />
+        app:layout_constraintVertical_bias="0.331" />
+
+        android:layout_width="145dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="237dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="417dp"
+        android:text="Car Information"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
