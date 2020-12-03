@@ -3,6 +3,7 @@ package com.finalproject.app;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -123,7 +124,6 @@ public class CarInformation extends Fragment {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             currentMiles = snapshot.getValue().toString();
-                            int dataInt = Integer.parseInt(currentMiles);
                             currentMileage.setText(currentMiles + "miles");
                             currentCar = mileageRef;
 
@@ -147,8 +147,8 @@ public class CarInformation extends Fragment {
         // declaring the buttons here.
 
         // this is the height for the popup window. just place holders for now
-        final int pop_width = 800;
-        final int pop_height = 1000;
+//        final int pop_width = 800;
+//        final int pop_height = 1000;
 
 
         constraintLayout = view.findViewById(R.id.CarInformationLayout);
