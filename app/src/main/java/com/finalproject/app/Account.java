@@ -1,5 +1,6 @@
 package com.finalproject.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -8,7 +9,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
+import com.finalproject.app.R;
+import com.finalproject.app.auth.LoginActivity;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +22,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.finalproject.app.db.User;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +44,16 @@ import java.util.EventListener;
  * create an instance of this fragment.
  */
 public class Account extends Fragment {
+
+    /***********************************
+     * ACCOUNT FRAGMENT VARIABLES
+     *************************************/
+    // Buttons
+    private Button btnChangePasswd;
+
+    // Firebase Auth instance
+    private FirebaseAuth fbAuth = FirebaseAuth.getInstance();
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -127,7 +146,50 @@ public class Account extends Fragment {
 
             }
         });
+        // Getting the change password button
+        btnChangePasswd = (Button)view.findViewById(R.id.ChangePasswordButton);
+        // Resetting the user password
+        btnChangePasswd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final EditText userMail = new EditText(view.getContext());
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(view.getContext());
+                passwordResetDialog.setTitle("Reset Password ?");
+                passwordResetDialog.setMessage("Enter your email address to receive a reset link.");
+                passwordResetDialog.setView(userMail);
 
+                passwordResetDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Get the email from user and send a reset link
+                        String mail = userMail.getText().toString();
+                        fbAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                // Display message to user that link has been sent
+                                Toast.makeText(getActivity(), "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                // Display message to user that link has not been sent
+                                Toast.makeText(getActivity(), "Error: Failed to send reset link - " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                });
+
+                passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Close dialog and go back to login page
+                    }
+                });
+
+                passwordResetDialog.create().show();
+            }
+        }); // End reset password ClickListener
         return view;
     }
 
