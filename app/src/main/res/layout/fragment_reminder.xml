@@ -175,12 +175,13 @@
         android:id="@+id/imageView2"
         android:layout_width="129dp"
         android:layout_height="77dp"
-        android:src="@drawable/background_splashscreen"
+        app:srcCompat="@drawable/background_splashscreen"
         app:layout_constraintBottom_toTopOf="@+id/card_view1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.053"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="TODO" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -50,7 +50,11 @@ public class CarInformation extends Fragment {
     DatabaseReference userCarRef = carRef.child("user-cars").child(user);
     DatabaseReference specificCarRef;
     DatabaseReference mileageRef;
+    DatabaseReference tireRotationRef;
+    DatabaseReference oilChangeRef;
     String currentMiles;
+    String oilChangeData;
+    String tireRotationData;
     DatabaseReference currentCar;
 
     /////
@@ -119,6 +123,33 @@ public class CarInformation extends Fragment {
                     String uid = ds.getKey();
                     specificCarRef = userCarRef.child(uid);
                     mileageRef = specificCarRef.child("mileage");
+                    oilChangeRef = specificCarRef.child("tireDiameter");
+                    tireRotationRef = specificCarRef.child("tireRotation");
+
+                    oilChangeRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            oilChangeData = snapshot.getValue().toString();
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
+                    tireRotationRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            tireRotationData = snapshot.getValue().toString();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
 
                     mileageRef.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -210,12 +241,12 @@ public class CarInformation extends Fragment {
                 // setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
 
-                String healthPercent = String.valueOf(oilHealth(currentMiles));
+                String healthPercent = String.valueOf(oilHealth(currentMiles,oilChangeData));
                 infoTitle.setText(healthPercent + "%");
 
                 ProgressBar healthBar = container.findViewById(R.id.progress_bar);
                 healthBar.setMax(100);
-                healthBar.setProgress(oilHealth(currentMiles));
+                healthBar.setProgress(oilHealth(currentMiles,oilChangeData));
 
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -245,12 +276,12 @@ public class CarInformation extends Fragment {
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
 
 
-                String healthPercent = String.valueOf(tireHealth(currentMiles));
+                String healthPercent = String.valueOf(tireHealth(currentMiles,tireRotationData));
                 infoTitle.setText(healthPercent + "%");
 
                 ProgressBar healthBar = container.findViewById(R.id.progress_bar);
                 healthBar.setMax(100);
-                healthBar.setProgress(tireHealth(currentMiles));
+                healthBar.setProgress(tireHealth(currentMiles,tireRotationData));
 
                 container.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -309,38 +340,58 @@ public class CarInformation extends Fragment {
     }
 
 
-    public int oilHealth (String currentMileage){
-        double milesUntilChange = 5000;
-        double currentMileageInt = Integer.parseInt(currentMileage);
-        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+    public int oilHealth (String currentMileage, String oilChangeData){
+        try {
+            int milesUntilChange = Integer.parseInt(oilChangeData);
+            double currentMileageInt = Integer.parseInt(currentMileage);
+            double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100));
 
 
-        return (int) percent;
+            return (int) percent;
+        }
+        catch(Exception e){
+            return 0;
+        }
     }
-    public int tireHealth(String currentMileage){
-        double milesUntilChange = 60000;
-        double currentMileageInt = Integer.parseInt(currentMileage);
-        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+    public int tireHealth(String currentMileage, String tireRotationData){
+        try {
+            int milesUntilChange = Integer.parseInt(tireRotationData);
+            double currentMileageInt = Integer.parseInt(currentMileage);
+            double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100));
 
+            return (int) percent;
+        }
+        catch(Exception e){
+            return 0;
+        }
 
-        return (int) percent;
-    }
+   }
 
     public int batteryHealth (String currentMileage){
-        double milesUntilChange = 50000;
-        double currentMileageInt = Integer.parseInt(currentMileage);
-        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+        try{
+            double milesUntilChange = 50000;
+            double currentMileageInt = Integer.parseInt(currentMileage);
+            double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100));
 
-        return (int) percent;
+            return (int) percent;
+        }
+        catch(Exception e){
+            return 0;
+        }
     }
 
 
     public int brakeHealth (String currentMileage) {
-        double milesUntilChange = 50000;
-        double currentMileageInt = Integer.parseInt(currentMileage);
-        double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100)) ;
+        try {
+            double milesUntilChange = 50000;
+            double currentMileageInt = Integer.parseInt(currentMileage);
+            double percent = (100 - (((currentMileageInt % milesUntilChange) / milesUntilChange) * 100));
 
-        return (int) percent ;
+            return (int) percent;
+        }
+        catch (Exception e){
+            return 0;
+        }
     }
 
 }
