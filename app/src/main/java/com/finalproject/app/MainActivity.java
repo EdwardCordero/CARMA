@@ -10,7 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.finalproject.app.auth.AuthUiActivity;
+import com.finalproject.app.auth.LoginActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void startLoginActivity(){
         // Create intent for AuthUI Login activity
-        Intent intent = new Intent(this, AuthUiActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         // Start the login activity
         startActivity(intent);
         finish();

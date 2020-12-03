@@ -9,7 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <activity android:name=".popActivity"></activity>
         <activity android:name=".VehicleRegistration"></activity>
+
         <activity
             android:name=".SplashScreen"
             android:theme="@style/SplashScreen">
@@ -18,13 +21,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".auth.RegistrationActivity"></activity>
+
         <activity
-            android:name=".auth.AuthUiActivity"
-            android:theme="@style/SplashScreen" >
+
+            android:name=".auth.LoginActivity">
+
         </activity>
         <activity
             android:name=".auth.RegistrationActivity">
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme" />

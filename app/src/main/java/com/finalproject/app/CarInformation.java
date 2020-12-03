@@ -3,7 +3,6 @@ package com.finalproject.app;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
@@ -56,11 +55,6 @@ public class CarInformation extends Fragment {
     /////
     /////////////////////////////////////////////
 
-
-
-
-
-
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,8 +102,6 @@ public class CarInformation extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_car_information, container, false);
 
-
-
         final Button btnBrakes = view.findViewById(R.id.btnBrakes);
         final Button btnFluids = view.findViewById(R.id.btnFluids);
         final Button btnTires = view.findViewById(R.id.btnTires);
@@ -152,13 +144,11 @@ public class CarInformation extends Fragment {
             }
         });
 
-
         // declaring the buttons here.
 
-
-
-
-
+        // this is the height for the popup window. just place holders for now
+        final int pop_width = 800;
+        final int pop_height = 1000;
 
 
         constraintLayout = view.findViewById(R.id.CarInformationLayout);
@@ -185,6 +175,7 @@ public class CarInformation extends Fragment {
                 //
                 //Setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+
                 String healthPercent = String.valueOf(brakeHealth(currentMiles));
                 infoTitle.setText(healthPercent + "%");
 
@@ -218,6 +209,7 @@ public class CarInformation extends Fragment {
                 //
                 // setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
+
                 String healthPercent = String.valueOf(oilHealth(currentMiles));
                 infoTitle.setText(healthPercent + "%");
 
@@ -252,6 +244,7 @@ public class CarInformation extends Fragment {
                 // setting information
                 TextView infoTitle = (TextView)container.findViewById(R.id.infoTitle);
 
+
                 String healthPercent = String.valueOf(tireHealth(currentMiles));
                 infoTitle.setText(healthPercent + "%");
 
@@ -272,6 +265,7 @@ public class CarInformation extends Fragment {
 
 
         btnBattery.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
 
@@ -300,7 +294,9 @@ public class CarInformation extends Fragment {
                         return true;
                     }
                 });
+
                 Toast.makeText(getContext(),"Battery", Toast.LENGTH_SHORT).show();
+
             }
         });
 

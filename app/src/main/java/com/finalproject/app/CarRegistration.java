@@ -1,7 +1,10 @@
 package com.finalproject.app;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class CarRegistration {
 
+    private String name;
     private String make;
     private String model;
     private String year;
@@ -20,9 +23,10 @@ public class CarRegistration {
 
     }
 
-    public CarRegistration(String make, String model, String year, String bodystyle, String mileage, String licensePlate,
+    public CarRegistration(String name, String make, String model, String year, String bodystyle, String mileage, String licensePlate,
                            String tireDiameter, String tireService, String tireRotation, String oilGrade, String oilChange,
                            String insuranceNum, String registrationExp){
+        this.name = name;
         this.make = make;
         this.model = model;
         this.year = year;
@@ -39,6 +43,12 @@ public class CarRegistration {
 
     }
 
+    // Takes user input for name of vehicle and reads it
+    public String getName() {return name;}
+
+    public void SetName(String name){
+        this.name = name;
+    }
     // Takes user input for vehicle information section and reads it
     public String getMake(){
         return make;
@@ -113,5 +123,8 @@ public class CarRegistration {
     public void SetInsuranceInformation(String insuranceNum, String registrationExp){
         this.insuranceNum = insuranceNum;
         this.registrationExp = registrationExp;
+    }
+
+    public String getUid() {return FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 }

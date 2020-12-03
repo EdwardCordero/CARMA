@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/CarInformationLayout"
+
     android:layout_width="match_parent"
     android:background="@drawable/background"
     android:layout_height="match_parent"
@@ -12,6 +13,7 @@
 
 
     <!-- this text view is to display the current mileage.   -->
+
 
     <Button
         android:id="@+id/btnTires"
@@ -78,6 +80,7 @@
         android:gravity="center"
         android:hint="Current Mileage"
         android:inputType="number|text"
+        android:text="500143 miles"
         android:textAlignment="center"
         android:textColor="@color/text_carinfo"
         android:textSize="30sp"
@@ -87,6 +90,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.202" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
